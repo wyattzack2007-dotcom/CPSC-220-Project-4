@@ -9,6 +9,8 @@
 /* Description: A dungeon crawler game */
 /***************************************/
 
+import processing.sound.*;
+
 //Global Variables
 Scene scene;
 String fileName;
@@ -19,7 +21,6 @@ String fileName;
 /* Return: void                                                             */
 /* Description: Constructs a scene from JSON save data or in a random state */
 /****************************************************************************/
-
 void setup() 
 {
   fullScreen(P2D);
@@ -65,7 +66,6 @@ void draw()
 /* Return: void                                      */
 /* Description: Passes key press events to the scene */
 /*****************************************************/
-
 void keyPressed() 
 {
   scene.keyPressed();
@@ -77,7 +77,6 @@ void keyPressed()
 /* Return: void                                        */
 /* Description: Passes key release events to the scene */
 /*******************************************************/
-
 void keyReleased() 
 {
   scene.keyReleased();
