@@ -8,7 +8,7 @@
  *        File: Project4.pde
  * Description: A dungeon crawler game
  */
-println("hello world");
+
 Scene scene;
 String fileName;
 
