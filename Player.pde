@@ -24,7 +24,8 @@ class Player extends Actor {
     this.nextKey = '\0';
     this.debounce = new HashMap<Character, Boolean>();
   }
-
+  void draw()
+  {}
   /**
    * Constructor: public Player()
    *  Parameters: JSONObject object - A JSON serialization of the player

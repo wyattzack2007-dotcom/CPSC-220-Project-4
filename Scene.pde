@@ -1,5 +1,5 @@
 /***************************************************************************************************************************/
-/* Author: Prof. Morales                                                                                                   */
+/* Author: Prof. Morales, Wyatt Zackowski                                                                                  */
 /* Course: CPSC 220                                                                                                        */
 /* Instructor: Prof. Morales                                                                                               */
 /* Created: 2026-04-15                                                                                                     */
@@ -21,7 +21,56 @@ class Scene
   private LinkedList<Actor> enemies;
   private HashMap<WorldObject, Position> positions;
   private HashMap<Direction, Position> doors;
-
+  
+  /****************************************/
+  /* Constructor: public Scene()          */
+  /* Parameters: none                     */
+  /* Return: none                         */
+  /* Description: Start new room creation */
+  /****************************************/
+  public Scene() 
+  {
+    //Construct Player Object and send entry direction to reset
+    player = new Player(Direction.NORTH);
+    reset(Direction.NORTH);
+  }
+  
+  /**********************************************/
+  /* Constructor: public Scene(JSONObject data) */
+  /* Parameters: JSONObject data - saved state  */
+  /* Return: none                               */
+  /* Description: For loading data from JSON    */
+  /**********************************************/
+  public Scene(JSONObject json)
+  {
+    //Gets room dimensions from the data JSON file
+    roomWidth = json.getInt("roomWidth");
+    roomHeight = json.getInt("roomHeight");
+    
+    //Creates new room with dimensions from data
+    room = new WorldObject[roomWidth][roomHeight];
+    
+    //Gets player postion from the data file
+    player = new Player(json.getJSONObject("player"));
+    Position playerPos = new Position(json.getInt("playerX"), json.getInt("playerY"), this);
+    
+    //Gets the direction the player entered from data
+    entry = Direction.valueOf(json.getString("entry"));
+    
+    //Adds player to the room
+    room[playerPos.getX()][playerPos.getY()] = player;
+    positions.put(player, playerPos);
+    
+    //Gets the positons of the doors from data and adds them to the room
+    for (Direction d : doors.keySet()) 
+    {
+      //Get position
+      Position doorPos = new Position(json.getInt("doorX"), json.getInt("doorY"), this);
+      //Add to room
+      doors.put(d, doorPos);
+    }
+  }
+  
   /**************************************************************************************/
   /* Method: private reset()                                                            */
   /* Parameters: Direction entry - The direction from which the player entered the room */
@@ -37,12 +86,63 @@ class Scene
     //----------------------------\\
     // TODO: COMPLETE THIS METHOD \\
     //----------------------------\\
-    roomWidth = 0;
-    roomHeight = 0;
+    
+    //Parameters for the room
+    roomWidth = 10;
+    roomHeight = 10;
     room = new WorldObject[roomWidth][roomHeight];
-    enemies = new LinkedList();
-    positions = new HashMap();
-    doors = new HashMap();
+    
+    //Parameters for entities and interactables
+    enemies = new LinkedList<Actor>();
+    positions = new HashMap<WorldObject, Position>();
+    doors = new HashMap<Direction, Position>();
+    
+    //Place a door on each side of the room
+    doors.put(Direction.NORTH, new Position(roomWidth/2, 0, this));
+    doors.put(Direction.EAST, new Position(roomWidth, roomHeight/2, this));
+    doors.put(Direction.SOUTH, new Position(roomWidth/2, roomHeight, this));
+    doors.put(Direction.WEST, new Position(0, roomHeight/2, this));
+    
+    //Identify location of entry door
+    Position entryDoor = doors.get(entry.inverse());
+    Position playerPos = new Position(entryDoor.getX(), entryDoor.getY(), this);
+    
+    //Place player at the door they entered through.
+    room[playerPos.getX()][playerPos.getY()] = player;
+    positions.put(player, playerPos);
+  }
+  
+  /****************************************************/
+  /* Method: public serialize()                       */
+  /* Parameters: none                                 */
+  /* Return: JSONObject                               */
+  /* Description: Serializes the entire scene state   */
+  /****************************************************/
+  public JSONObject serialize() 
+  {
+    //Create JSONObject for Scene.pde
+    JSONObject json = new JSONObject();
+
+    //Add the room Parameters to the JSONObject
+    json.setInt("roomWidth", this.roomWidth);
+    json.setInt("roomHeight", this.roomHeight);
+    json.setString("entry", this.entry.name());
+
+    //Add player position to the JSONObject
+    Position playerPos = this.positions.get(this.player);
+    json.setInt("playerX", playerPos.getX());
+    json.setInt("playerY", playerPos.getY());
+    
+    //Add door positions to the JSONObject with a for loop
+    for (Direction d : this.doors.keySet()) 
+    {
+      //Add the positions of each door
+      Position dPos = this.doors.get(d);
+      json.setInt(d.name()+"doorX", dPos.getX());
+      json.setInt(d.name()+"doorY", dPos.getY());
+    }
+    
+    return json;
   }
 
   /***********************************************************************************************/
@@ -278,7 +378,8 @@ class Scene
   /* Return: int - The Height of the room, in number of rows   */
   /* Description: Returns the height of the room               */  
   /*************************************************************/
-  public int getRoomHeight() {
+  public int getRoomHeight() 
+  {
     return roomHeight;
   }
 
@@ -288,8 +389,10 @@ class Scene
   /* Return:void                                               */
   /* Description: Passes events of KeyPressed to the player    */  
   /*************************************************************/
-  public void keyPressed() {
-    if (this.player != null) {
+  public void keyPressed() 
+  {
+    if (this.player != null) 
+    {
       this.player.keyPressed();
     }
   }
@@ -316,11 +419,33 @@ class Scene
   /********************************/
   public void draw() 
   {
-    // Determine the floor size
+    //Determine the floor size
     float size = min((float)width / (this.roomWidth + 2), (float)height / (this.roomHeight + 2));
 
     //----------------------------\\
     // TODO: COMPLETE THIS METHOD \\
     //----------------------------\\
+    
+    //Center the entire grid
+    float offsetX = (width - (roomWidth + 2) * size) / 2f;
+    float offsetY = (height - (roomHeight + 2) * size) / 2f;
+    
+    //Draw room tiles
+    stroke(40);           
+    strokeWeight(2);
+    
+    //Nested for loop for room dimensions
+    for (int x = 0; x < this.roomWidth; x++) 
+    {
+      for (int y = 0; y < this.roomHeight; y++) 
+      {
+        //Determin tile demensions 
+        float tileX = offsetX + (x + 1) * size;
+        float tileY = offsetY + (y + 1) * size;
+
+        //Draw Floor tile
+        rect(tileX, tileY, size, size);
+      }
+    }
   }
 }

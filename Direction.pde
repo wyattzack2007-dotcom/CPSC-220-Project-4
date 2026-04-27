@@ -9,7 +9,8 @@
  * Description: The set of cardinal directions
  */
 
-enum Direction {
+enum Direction 
+{
   NORTH(0, -1),
   SOUTH(0, 1),
   EAST(1, 0),
@@ -26,7 +27,8 @@ enum Direction {
    *              X and Y positional offsets
    */
 
-  private Direction(int x, int y) {
+  private Direction(int x, int y) 
+  {
     this.x = x;
     this.y = y;
   }
@@ -39,8 +41,10 @@ enum Direction {
    *              north to south or east to west
    */
 
-  public Direction inverse() {
-    switch (this) {
+  public Direction inverse() 
+  {
+    switch (this) 
+    {
     case NORTH:
       return SOUTH;
 
