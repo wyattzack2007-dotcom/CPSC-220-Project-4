@@ -122,6 +122,39 @@ abstract class Actor extends WorldObject {
       this.validActions.put(action, valid);
     }
   }
+  
+  /**************************************************/
+  /* Constructor: draw()                            */
+  /*  Parameters: Void                              */
+  /*      Return: Void                              */
+  /* Description: Constructs the health bar         */
+  /**************************************************/
+  public void draw() {
+    pushMatrix(); //health bar
+      rectMode(CORNER);
+      float barW = 0.6f; //bar width = 60% of tile width
+      float barH = .15f; //bar height = 15% of tile height
+      float barPos = 0.6f; //bar position = 60% below tile center
+      
+      float health = this.getHealth(); //gets health percent from 0-1
+      
+      //background
+      fill(108, 108, 108); //dark grey
+      rect(-barW/2, barPos, barW, barH); //should center the bar?
+      
+      //health bar (changes colors as health dec.)
+      float red, green;
+      
+      red = map(health, 0, 1, 255, 0); //red value increases as health goes down
+      green = map(health, 0, 1, 0, 255); //green value decreases as health goes down
+      
+      fill(red, green, 0);
+      
+      rect(-barW/2, barPos, barW * health, barH); //draws shrinking health bar
+    popMatrix();
+  }
+
+
 
   /**
    *      Method: public getAction()
