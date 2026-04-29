@@ -37,7 +37,7 @@ class Scene
   
   /**********************************************/
   /* Constructor: public Scene(JSONObject data) */
-  /* Parameters: JSONObject data - saved state  */
+  /* Parameters: JSONObject data                */
   /* Return: none                               */
   /* Description: For loading data from JSON    */
   /**********************************************/
@@ -430,22 +430,43 @@ class Scene
     float offsetX = (width - (roomWidth + 2) * size) / 2f;
     float offsetY = (height - (roomHeight + 2) * size) / 2f;
     
-    //Draw room tiles
-    stroke(40);           
-    strokeWeight(2);
-    
     //Nested for loop for room dimensions
     for (int x = 0; x < this.roomWidth; x++) 
     {
       for (int y = 0; y < this.roomHeight; y++) 
       {
-        //Determin tile demensions 
+        //Get tile positions 
         float tileX = offsetX + (x + 1) * size;
         float tileY = offsetY + (y + 1) * size;
-
-        //Draw Floor tile
+        
+        //Set draw parameters
+        stroke(40);           
+        strokeWeight(2);
+    
+        //Draw tiles
         rect(tileX, tileY, size, size);
       }
     }
+    
+    //Draw a door on each wall
+    for (Direction d : doors.keySet()) 
+    {
+      //Get door positions
+      float doorX = json.getInt("doorX");
+      float doorY = json.getInt("doorY");
+      
+      //Set draw parameters
+      fill(0);
+      
+      //Determines if the door should be drawn vertically or horizontally
+      if(d == NORTH || d==SOUTH)
+      {
+        rect(doorX, doorY, 10,5);
+      }
+      else
+      {
+        rect(doorX, dooY, 5,10);
+      }
+    
   }
 }
