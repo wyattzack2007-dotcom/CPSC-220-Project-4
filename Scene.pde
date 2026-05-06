@@ -16,13 +16,50 @@ import java.util.LinkedList;
 class Scene {
   private int roomWidth;
   private int roomHeight;
-  private WorldObject[][] room;
-  private Direction entry;
+  private WorldObject[][] room; //save
+  private Direction entry; //save
   private Player player;
   private LinkedList<Actor> enemies;
   private HashMap<WorldObject, Position> positions;
-  private HashMap<Direction, Position> doors;
+  private HashMap<Direction, Position> doors; //save
 
+  public Scene()
+  {
+    roomWidth = 10;
+    roomHeight = 10;
+    room = new WorldObject[roomWidth][roomHeight];
+    entry = Direction.NORTH;
+    enemies = null;
+    positions = null;
+    doors = null;
+    reset(entry);
+  }
+  public Scene(JSONObject data)
+  {
+    roomWidth = data.getInt("RoomWidth");
+    roomHeight = data.getInt("RoomHeight");
+    reset(entry);
+  }
+  
+  
+  
+  public JSONObject serialize()
+  {
+    JSONObject obj = new JSONObject();
+    JSONArray master = new JSONArray();
+    for (int i = 0; i < room.length; i++)
+    {
+      JSONArray row = new JSONArray();
+      for (int j = 0; j < room[i].length; i++)
+      {
+        JSONObject roomSpace = room[i][j].serialize();
+        row.setJSONObject(j, roomSpace);
+      }
+      master.setJSONArray(i, row);
+    }
+    obj.setJSONArray("
+     return obj;
+  }
   /**
    *      Method: private reset()
    *  Parameters: Direction entry - The direction from which

@@ -17,6 +17,6 @@ abstract class Interactable extends WorldObject {
    *      Return: boolean - Whether or not the interaction succeeded
    * Description: Attempts to interact with the object
    */
-
+  
   public abstract boolean interact(Player player);
 }

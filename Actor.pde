@@ -122,6 +122,11 @@ abstract class Actor extends WorldObject {
       this.validActions.put(action, valid);
     }
   }
+  
+  public void draw()
+  {
+    
+  }
 
   /**
    *      Method: public getAction()

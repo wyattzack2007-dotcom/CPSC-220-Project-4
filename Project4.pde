@@ -25,7 +25,7 @@ void setup()
 {
   fullScreen(P2D);
   pixelDensity(1);
-  fileName = "data" + File.separator + "save.json";
+  fileName = sketchPath("data/save.json");
   File file = new File(fileName);
 
   if (file.exists()) 
