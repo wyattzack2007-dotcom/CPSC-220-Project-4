@@ -69,6 +69,15 @@ class Scene
       //Add to room
       doors.put(d, doorPos);
     }
+
+    //Add enemy positions to the JSONObject
+    for (LinkedList e : enemies.keySet()) 
+    {
+      //Add the positions of each enemy 
+      Position enemyPos = new Position(json.getInt("enemyX"), json.getInt("enemyY"), this);
+      //add enemies to room
+      enemies.put(e, enemyPos);
+    }
   }
   
   /**************************************************************************************/
@@ -110,6 +119,17 @@ class Scene
     //Place player at the door they entered through.
     room[playerPos.getX()][playerPos.getY()] = player;
     positions.put(player, playerPos);
+    
+    //set random amount and locations for enemies.
+    int amount = random(1,5);
+    Position enemyPos = new Position(random(1, roomwidth), random(1,roomHeight), this);
+    
+    //Cycle through enemy list
+    for (LinkedList e : enemies.keySet())
+    {
+      //place enemies on the grid
+      enemies.put(e, enemyPos);
+    }
   }
   
   /****************************************************/
@@ -134,12 +154,21 @@ class Scene
     json.setInt("playerY", playerPos.getY());
     
     //Add door positions to the JSONObject with a for loop
-    for (Direction d : this.doors.keySet()) 
+    for (Direction d : doors.keySet()) 
     {
       //Add the positions of each door
-      Position dPos = this.doors.get(d);
+      Position dPos = doors.get(d);
       json.setInt(d.name()+"doorX", dPos.getX());
       json.setInt(d.name()+"doorY", dPos.getY());
+    }
+    
+    //Add enemy positions to the JSONObject
+    for (LinkedList e : enemies.keySet()) 
+    {
+      //Add the positions of each enemy 
+      Position ePos = enemies.get(e);
+      json.setInt("enemyX", ePos.getX());
+      json.setInt("enemyY", ePos.getY());
     }
     
     return json;
