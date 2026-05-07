@@ -60,6 +60,15 @@ class Position {
   public boolean equals(Position other) {
     return other != null && this.x == other.getX() && this.y == other.getY();
   }
+  
+  public JSONObject serialize()
+  {
+    JSONObject obj = new JSONObject();
+    obj.setInt("Xpos", x);
+    obj.setInt("Ypos", y);
+    return obj;
+  }
+  
 
   /**
    *      Method: public move()

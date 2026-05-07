@@ -16,7 +16,7 @@ import java.util.LinkedList;
 class Scene {
   private int roomWidth;
   private int roomHeight;
-  private WorldObject[][] room; //save
+  private WorldObject[][] room; //save done
   private Direction entry; //save
   private Player player;
   private LinkedList<Actor> enemies;
@@ -36,9 +36,22 @@ class Scene {
   }
   public Scene(JSONObject data)
   {
-    roomWidth = data.getInt("RoomWidth");
-    roomHeight = data.getInt("RoomHeight");
+    loadRoom();
+    entry = Direction.valueOf(data.getString("Entry"));
+    loadDoors();
+    
+    
     reset(entry);
+  }
+  
+  private void loadRoom(JSONArray data)
+  {
+    
+  }
+  
+  private void loadDoors(JSONObject data)
+  {
+    
   }
   
   
@@ -46,7 +59,23 @@ class Scene {
   public JSONObject serialize()
   {
     JSONObject obj = new JSONObject();
-    JSONArray master = new JSONArray();
+    obj.setJSONArray("Room", serializeRoom());
+    obj.setString("Entry", entry.name());
+    obj.setJSONObject("Doors", serializeDoors());
+    return obj;
+  }
+  
+  private JSONObject serializeDoors()
+  {
+    JSONObject doorMap = new JSONObject();
+    doors.forEach((dir, pos) -> {
+      doorMap.setJSONObject(dir.name(), pos.serialize());
+    });    
+    return doorMap;
+  }
+  private JSONArray serializeRoom()
+  {
+     JSONArray master = new JSONArray();
     for (int i = 0; i < room.length; i++)
     {
       JSONArray row = new JSONArray();
@@ -57,8 +86,8 @@ class Scene {
       }
       master.setJSONArray(i, row);
     }
-    obj.setJSONArray("
-     return obj;
+    return master;
+    
   }
   /**
    *      Method: private reset()
