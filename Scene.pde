@@ -12,6 +12,7 @@
  */
 
 import java.util.LinkedList;
+import java.util.reflection.*;
 
 class Scene {
   private int roomWidth;
@@ -36,9 +37,9 @@ class Scene {
   }
   public Scene(JSONObject data)
   {
-    loadRoom();
+    loadRoom(data.getJSONArray("Room"));
     entry = Direction.valueOf(data.getString("Entry"));
-    loadDoors();
+    loadDoors(data.getJSONObject("doorMap"));
     
     
     reset(entry);
@@ -46,8 +47,29 @@ class Scene {
   
   private void loadRoom(JSONArray data)
   {
-    
-  }
+    String dataType;
+    for (int i = 0; i < data.size(); i++)
+    {
+      if (data.isNull(i))
+        continue;
+      JSONArray row = data.getJSONArray(i);
+      for (int j = 0; j < row.size(); j++)
+      {
+        if (row.isNull(j))
+          continue;      
+        JSONObject obj = row.getJSONObject(j);
+        WorldObject worldObj = null;
+        if (obj.isNull("className"))
+           continue;
+        dataType = obj.getString("className");
+        if (dataType.equals("Player"))
+          worldObj = new Player(obj);
+        if (dataType.equals("Enemy"))
+          worldObj = new Enemy(obj);
+        room[i][j] = worldObj;
+       }
+     }
+   }
   
   private void loadDoors(JSONObject data)
   {
@@ -75,14 +97,17 @@ class Scene {
   }
   private JSONArray serializeRoom()
   {
-     JSONArray master = new JSONArray();
+    JSONArray master = new JSONArray();
     for (int i = 0; i < room.length; i++)
     {
       JSONArray row = new JSONArray();
       for (int j = 0; j < room[i].length; i++)
       {
-        JSONObject roomSpace = room[i][j].serialize();
-        row.setJSONObject(j, roomSpace);
+        if (room[i][j] != null)
+        {
+          JSONObject roomSpace = room[i][j].serialize();
+          row.setJSONObject(j, roomSpace);
+        }
       }
       master.setJSONArray(i, row);
     }
