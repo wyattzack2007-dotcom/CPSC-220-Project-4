@@ -27,6 +27,13 @@ class Position {
     this.y = constrain(y, 0, scene.getRoomHeight() - 1);
     this.scene = scene;
   }
+  
+  private Position(JSONObject obj, Scene scene)
+  {
+    this.x = obj.getInt("Xpos");
+    this.y = obj.getInt("Ypos");
+    this.scene = scene;
+  }
 
   /**
    *      Method: public getX()

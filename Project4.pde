@@ -23,15 +23,18 @@ String fileName;
 /****************************************************************************/
 void setup() 
 {
+  
   fullScreen(P2D);
   pixelDensity(1);
   fileName = sketchPath("data/save.json");
   File file = new File(fileName);
-
+  
+  
   if (file.exists()) 
   {
     JSONObject data = loadJSONObject(fileName);
     scene = new Scene(data);
+    System.out.println("File loaded");
   } 
   else 
   {

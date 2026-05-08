@@ -12,7 +12,7 @@
  */
 
 import java.util.LinkedList;
-import java.util.reflection.*;
+import java.util.Iterator;
 
 class Scene {
   private int roomWidth;
@@ -31,23 +31,28 @@ class Scene {
     room = new WorldObject[roomWidth][roomHeight];
     entry = Direction.NORTH;
     enemies = null;
-    positions = null;
-    doors = null;
+    positions = new HashMap<>();
+    doors = new HashMap<>();
+    doors.put(Direction.NORTH, new Position(1, 1, this));
     reset(entry);
   }
   public Scene(JSONObject data)
   {
+
     loadRoom(data.getJSONArray("Room"));
+
     entry = Direction.valueOf(data.getString("Entry"));
-    loadDoors(data.getJSONObject("doorMap"));
-    
-    
+
+    loadDoors(data.getJSONObject("Doors"));
+    System.out.println("doors loaded");
     reset(entry);
   }
   
   private void loadRoom(JSONArray data)
   {
     String dataType;
+    JSONArray firstRow = data.getJSONArray(0);
+    room = new WorldObject[data.size()][firstRow.size()];
     for (int i = 0; i < data.size(); i++)
     {
       if (data.isNull(i))
@@ -73,7 +78,19 @@ class Scene {
   
   private void loadDoors(JSONObject data)
   {
-    
+    doors = new HashMap<>();
+    Iterator<String> keys = data.keyIterator();
+    while(keys.hasNext())
+    {
+      
+      String key = keys.next();
+      System.out.println(key);
+      Position pos = new Position(data.getJSONObject(key), this);
+      System.out.println(pos);
+      doors.put(Direction.valueOf(key), pos);
+    }
+    System.out.println("Doors Loaded");
+
   }
   
   
@@ -84,13 +101,17 @@ class Scene {
     obj.setJSONArray("Room", serializeRoom());
     obj.setString("Entry", entry.name());
     obj.setJSONObject("Doors", serializeDoors());
+    System.out.println("doors worked");
     return obj;
   }
   
   private JSONObject serializeDoors()
   {
     JSONObject doorMap = new JSONObject();
+    if (doors.equals(null))
+      return null;
     doors.forEach((dir, pos) -> {
+      System.out.println("test434");
       doorMap.setJSONObject(dir.name(), pos.serialize());
     });    
     return doorMap;
@@ -101,7 +122,7 @@ class Scene {
     for (int i = 0; i < room.length; i++)
     {
       JSONArray row = new JSONArray();
-      for (int j = 0; j < room[i].length; i++)
+      for (int j = 0; j < room[i].length; j++)
       {
         if (room[i][j] != null)
         {
