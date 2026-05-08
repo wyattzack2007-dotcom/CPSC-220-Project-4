@@ -25,7 +25,7 @@ class Enemy extends Actor {
   /* Constructor: public Enemy()                    */
   /*  Parameters: JSONObject object - How the       */
   /*              data is saved                     */
-  /* Description: Constructs a enemy in a new room  */
+  /* Description: Constructs enemy from JSON data   */
   /**************************************************/
   public Enemy(JSONObject object) {
     super(object);
@@ -47,16 +47,35 @@ class Enemy extends Actor {
   /* Constructor: draw()                            */
   /*  Parameters: Void                              */
   /*      Return: Void                              */
-  /* Description: Serializes the JSON object        */
+  /* Description: Draws the enemy                   */
   /**************************************************/
   public void draw() {
-    super.draw(); 
+    super.draw(); //healthbar
     
+    //drawing enemy
     pushMatrix();
+      ellipseMode(CENTER);
+      rectMode(CENTER);
       
+      noStroke();
+      fill(100);
+      ellipse(0,5,65,65); //outer circle
+      
+      //base structure
+      fill(255);
+      ellipse(0,0,50,35); //head
+      rect(0,20,7,20); //jaw middle
+      rect(-10,20,7,20); //jaw left
+      rect(10,20,7,20); //jaw right
+      
+      //face features
+      fill(0);
+      ellipse(-10,-5,10,10); //left eye
+      ellipse(10,-5,10,10); //right eye
+      
+      ellipse(0,5,3,5); //nose long
+      ellipse(0,7,5,3); //nose bottom part
     popMatrix();
-    
-    //draw enemy
   }
   
   public Action getAction() {
@@ -68,7 +87,7 @@ class Enemy extends Actor {
       }
     }
       
-      //movement array
+      //movement array to randomize
       Action[] move = {
         Action.MOVE_NORTH,
         Action.MOVE_SOUTH,
@@ -77,14 +96,13 @@ class Enemy extends Actor {
       };
       
       //movement randomization
-      for(int i = 0; i < 4; i++) {
+      for(int i = 0; i < 4; i++) { 
         Action movement = move[(int)random(4)];
         if(getActionValidity(movement)) {
           this.facing = movement.direction; //change facing direction of enemy
           return movement; //move
         }
       }
-    
     return null; //removes error
   }
 }

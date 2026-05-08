@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales
+ *      Author: Prof. Morales, Bella Olmo
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -108,6 +108,15 @@ class Player extends Actor {
 
     // Check if the action can be performed
     return this.getActionValidity(action) ? action : null;
+  }
+
+  public void draw() {
+    super.draw();
+    
+    pushMatrix();
+    
+    popMatrix();
+    
   }
 
   /**
