@@ -114,7 +114,25 @@ class Player extends Actor {
     super.draw();
     
     pushMatrix();
-    
+      ellipseMode(CENTER);
+      rectMode(CENTER);
+      
+      noStroke();
+      fill(100);
+      ellipse(0,0,65,65); //outer circle
+      
+      //base structure
+      fill(255);
+      ellipse(0,0,45,45); //head
+      
+      //face features
+      fill(0);
+      ellipse(-10,0,10,10); //left eye
+      ellipse(10,0,10,10); //right eye
+      
+      //hat
+      rect(-4,-15,45,7);
+      rect(1,-20,35,10);
     popMatrix();
     
   }
