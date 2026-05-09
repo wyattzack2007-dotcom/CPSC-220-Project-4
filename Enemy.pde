@@ -84,6 +84,13 @@ class Enemy extends Actor {
     super.draw(); //draws healthbar
   }
   
+  
+  /*********************************************************/
+  /*      Method: public getAction()                       */
+  /*  Parameters: void                                     */
+  /*      Return: Action - The selected action to perform  */
+  /* Description: Selects an action to perform             */
+  /*********************************************************/
   public Action getAction() {
     //attack
     for(Action atk : Action.values()) { //loops through list of actions
