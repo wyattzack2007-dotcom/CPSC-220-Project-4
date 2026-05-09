@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales
+ *      Author: Prof. Morales, Bella Olmo
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -108,6 +108,33 @@ class Player extends Actor {
 
     // Check if the action can be performed
     return this.getActionValidity(action) ? action : null;
+  }
+
+  public void draw() {
+    super.draw();
+    
+    pushMatrix();
+      ellipseMode(CENTER);
+      rectMode(CENTER);
+      
+      noStroke();
+      fill(100);
+      ellipse(0,0,65,65); //outer circle
+      
+      //base structure
+      fill(255);
+      ellipse(0,0,45,45); //head
+      
+      //face features
+      fill(0);
+      ellipse(-10,0,10,10); //left eye
+      ellipse(10,0,10,10); //right eye
+      
+      //hat
+      rect(-4,-15,45,7);
+      rect(1,-20,35,10);
+    popMatrix();
+    
   }
 
   /**
