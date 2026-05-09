@@ -1,135 +1,37 @@
 {
   "Entry": "NORTH",
+  "RoomWidth": 10,
   "Doors": {"NORTH": {
     "Ypos": 1,
     "Xpos": 1
   }},
-  "Room": [
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
+  "Positions": {
+    "ObjectPositions": [
+      {
+        "Ypos": 1,
+        "Xpos": 2
+      },
+      {
+        "Ypos": 2,
+        "Xpos": 2
+      }
     ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
+    "WorldObjects": [
       {
         "damage": 10,
-        "facing": "NORTH",
+        "facing": "SOUTH",
         "maxHealth": 100,
         "className": "Player",
         "currHealth": 100
       },
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
-    ],
-    [
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null,
-      null
+      {
+        "damage": 2,
+        "facing": "NORTH",
+        "maxHealth": 2,
+        "className": "Enemy",
+        "currHealth": 2
+      }
     ]
-  ]
+  },
+  "RoomHeight": 10
 }

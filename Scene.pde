@@ -41,69 +41,51 @@ class Scene {
     
     reset(entry);
   }
+  
   public Scene(JSONObject data)
   {
+    roomWidth = data.getInt("RoomWidth");
+    roomHeight = data.getInt("RoomHeight");
+    room = new WorldObject[roomWidth][roomHeight];
+ 
+    entry = Direction.valueOf(data.getString("Entry"));
+    
     positions = new HashMap<>();
     doors = new HashMap<>();
     enemies = new LinkedList<>();
-    loadRoom(data.getJSONArray("Room"));
-    entry = Direction.valueOf(data.getString("Entry"));
+    
+    loadPositions(data.getJSONObject("Positions"));
     loadDoors(data.getJSONObject("Doors"));
-  }
-  
-  private void loadRoom(JSONArray data)
-  {
-    String dataType;
-    JSONArray firstRow = data.getJSONArray(0);
-    roomWidth = data.size();
-    roomHeight = firstRow.size();
-    room = new WorldObject[roomWidth][roomHeight];
-    for (int i = 0; i < data.size(); i++)
-    {
-      JSONArray row = data.getJSONArray(i);
-      for (int j = 0; j < row.size(); j++)
-      {
-        if (row.isNull(j))
-          continue;      
-        JSONObject obj = row.getJSONObject(j);
-        WorldObject worldObj = null;
-        if (obj.isNull("className"))
-           continue;
-        dataType = obj.getString("className");
-        if (dataType.equals("Player"))
-        {
-          worldObj = new Player(obj);
-          player = (Player)worldObj;
-        }
-        if (dataType.equals("Enemy"))
-          worldObj = new Enemy(obj);
-        room[i][j] = worldObj;
-        System.out.println(i + " " + j);
-        positions.put(worldObj, new Position(i, j, this));
-        System.out.println(positions.get(worldObj).getX() + " " + positions.get(worldObj).getY());
-       }
-     }
-   }
-  
-  private void loadDoors(JSONObject data)
-  {
-    Iterator<String> keys = data.keyIterator();
-    while(keys.hasNext())
-    {
-      String key = keys.next();
-      Position pos = new Position(data.getJSONObject(key), this);
-      doors.put(Direction.valueOf(key), pos);
-    }
+    loadRoom();
   }
   
  
+  
   public JSONObject serialize()
   {
     JSONObject obj = new JSONObject();
-    obj.setJSONArray("Room", serializeRoom());
+    obj.setInt("RoomWidth", roomWidth);
+    obj.setInt("RoomHeight", roomHeight);
     obj.setString("Entry", entry.name());
     obj.setJSONObject("Doors", serializeDoors());
+    obj.setJSONObject("Positions", serializePositions());
     return obj;
+  }
+  
+  private JSONObject serializePositions()
+  {
+    JSONObject worldObjects = new JSONObject();
+    JSONArray objects = new JSONArray();
+    JSONArray objPos = new JSONArray();
+    if (positions.equals(null))
+      return null;
+     positions.forEach((obj, pos) -> {
+       objects.append(obj.serialize());
+       objPos.append(pos.serialize());
+     });
+     worldObjects.setJSONArray("WorldObjects", objects);
+     worldObjects.setJSONArray("ObjectPositions", objPos);
+     return worldObjects;
   }
   
   private JSONObject serializeDoors()
@@ -117,27 +99,51 @@ class Scene {
     return doorMap;
   }
   
-  private JSONArray serializeRoom()
+   private void loadPositions(JSONObject data)
   {
-    JSONArray master = new JSONArray();
-    for (int i = 0; i < room.length; i++)
-    {   
-      JSONArray row = new JSONArray();
-      for (int j = 0; j < room[i].length; j++)
+    String dataType;
+    Position objPos;
+    JSONObject JSONObj;
+    WorldObject worldObj = null;
+    JSONArray objects = data.getJSONArray("WorldObjects"); 
+    JSONArray objPositions = data.getJSONArray("ObjectPositions");
+    for (int i = 0; i < objects.size(); i++)
+    {
+      JSONObj = objects.getJSONObject(i);
+      dataType = JSONObj.getString("className");
+      if (dataType.equals("Player"))
       {
-        if (room[i][j] != null)
-        {
-          JSONObject roomSpace = room[i][j].serialize();
-          row.setJSONObject(j, roomSpace);
-        }
-        else
-          row.setJSONObject(j, null);
+        worldObj = new Player(JSONObj);
+        player = (Player)worldObj;
       }
-      master.setJSONArray(i, row);
+      if (dataType.equals("Enemy"))
+      {
+        worldObj = new Enemy(JSONObj);
+        enemies.add((Enemy)worldObj);
+      }
+      objPos = new Position(objPositions.getJSONObject(i), this);
+      positions.put(worldObj, objPos);
+    } 
+   }
+  
+  private void loadDoors(JSONObject data)
+  {
+    Iterator<String> keys = data.keyIterator();
+    while(keys.hasNext())
+    {
+      String key = keys.next();
+      Position pos = new Position(data.getJSONObject(key), this);
+      doors.put(Direction.valueOf(key), pos);
     }
-    return master;
-    
   }
+  
+  private void loadRoom()
+  {
+     positions.forEach((obj, pos) -> {
+       room[pos.getX()][pos.getY()] = obj;
+     });
+  }
+
   /**
    *      Method: private reset()
    *  Parameters: Direction entry - The direction from which
@@ -173,16 +179,10 @@ class Scene {
     positions.put(player, playerPos);
     newEntities(positions);
     enemies = addEnemies(positions);
-    initializeRoom();
+    loadRoom();
   }
   
-  private void initializeRoom()
-  {
-    positions.forEach((obj, pos) -> {
-      if (obj instanceof Player)
-        room[pos.getX()][pos.getY()] = obj;
-    });
-  }
+
   
   private LinkedList<Actor> addEnemies(HashMap<WorldObject, Position> roomObjects)
   {
@@ -490,8 +490,6 @@ class Scene {
         rect(tileX, tileY, size, size);
       }
     }
-    
-    //Draw a door on each wall
- 
+
   }
 }
