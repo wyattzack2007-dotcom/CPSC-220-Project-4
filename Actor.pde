@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales
+ *      Author: Prof. Morales, Patrick Walter
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -127,10 +127,16 @@ abstract class Actor extends WorldObject {
     }
   }
   
+  
+  /*
+    Method: draw()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws the actor's health bar and calls the actor's draw method
+   */
 public void draw(float size)
   {
-     float healthPercent = (float)currHealth / (float)maxHealth;
-
+     float healthPercent = (float)currHealth / (float)maxHealth; //get health percentage
         color healthColor;
         // Get the healthbar color based on percent cutoffs
         if (healthPercent > 0.5) {
@@ -149,6 +155,30 @@ public void draw(float size)
         fill(healthColor);
         rect(size/10, size/10, size/1.25 * healthPercent, size/24);
         pop();
+  }
+  
+  /**
+    Method: public getRotation()
+    Parameters: void
+    Return: none
+    Description: Rotates the drawing based on direction
+  */
+  private void getRotation()
+  {
+    switch(facing)
+    {
+      case NORTH:
+        rotate(PI);
+        break;
+      case EAST:
+        rotate(3*PI/2);
+        break;
+      case WEST:
+       rotate(PI/2);
+       break;
+      case SOUTH:
+        break;
+    }
   }
 
   /**

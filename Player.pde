@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales
+ *      Author: Prof. Morales, Patrick Walter
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -131,14 +131,24 @@ class Player extends Actor {
     }
 
     // Check if the action can be performed
-    return action;
-    //return getActionValidity(action) ? action : null;
+    System.out.println(getActionValidity(action));
+    return getActionValidity(action) ? action : null;
+    
+    
   }
   
+    /**
+   *      Method: public addInventoryItem()
+   *  Parameters: Interactable item - equipable item
+   *      Return: none
+   * Description: adds equipable item to inventory if item is not already in it
+   */
   public void addInventoryItem(Interactable item)
   {
-    if (!inventory.contains(item))
+    if(inventory.isEmpty() || inventory.stream().noneMatch(i -> i.getClass().equals(item.getClass())))
+    {
       inventory.add(item);
+    }
   }
 
   /**
@@ -174,24 +184,63 @@ class Player extends Actor {
     }
   }
   
+    /*
+    Method: draw()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws the Player
+   */  
   public void draw(float size)
   {
-    super.draw(size);
-    fill(204, 102, 0);
-    circle(size/2, size/2, size/1.6);
-    drawItems(size);
+    super.draw(size); //draw health bar
+    translate(size/2, size/2); //center
+    super.getRotation(); //rotate
+     pushMatrix();
+      ellipseMode(CENTER);
+      rectMode(CENTER);
+      
+      noStroke();
+      fill(100);
+      ellipse(0,0,size/1.5,size/1.5); //outer circle
+      
+      //base structure
+      fill(255);
+      ellipse(0,0,size/2,size/2); //head
+      
+      //face features
+      fill(0);
+      ellipse(-10,0,size/10,size/10); //left eye
+      ellipse(10,0,size/10,size/10); //right eye
+      
+      //hat
+      rect(0,-size/4,size/2,size/5);
+      
+      
+    popMatrix();
+    drawItems(size); //draw any equiped items
   }
   
+    /*
+    Method: drawItems()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws any equipped items
+   */  
   private void drawItems(float size)
   {
-    for (Interactable item : inventory)
+    //rotate item
+    rotate(PI);
+    //iterate through inventory
+    for (Interactable item : inventory) 
     {
+      //check if equipped item is a sword
       if (item instanceof Sword)
       {
+        //draw it
         img.resize(0, (int)size/2);
-        image(img, 0, 0);
+        image(img, -size/2, -size/2);
       }
-      
+
     }   
   }
   

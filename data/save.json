@@ -1,103 +1,66 @@
 {
-  "Entry": "EAST",
-  "RoomWidth": 12,
+  "Entry": "NORTH",
+  "RoomWidth": 6,
   "Doors": {
     "NORTH": {
       "Ypos": 0,
-      "Xpos": 9
+      "Xpos": 4
     },
     "WEST": {
-      "Ypos": 2,
+      "Ypos": 1,
       "Xpos": 0
     },
     "SOUTH": {
-      "Ypos": 5,
-      "Xpos": 4
+      "Ypos": 10,
+      "Xpos": 0
     },
     "EAST": {
-      "Ypos": 4,
-      "Xpos": 11
+      "Ypos": 8,
+      "Xpos": 5
     }
   },
   "Positions": {
     "ObjectPositions": [
       {
-        "Ypos": 3,
-        "Xpos": 1
+        "Ypos": 10,
+        "Xpos": 0
       },
       {
-        "Ypos": 2,
+        "Ypos": 7,
+        "Xpos": 3
+      },
+      {
+        "Ypos": 10,
+        "Xpos": 3
+      },
+      {
+        "Ypos": 9,
         "Xpos": 5
       },
       {
-        "Ypos": 0,
-        "Xpos": 1
-      },
-      {
-        "Ypos": 4,
-        "Xpos": 7
+        "Ypos": 3,
+        "Xpos": 0
       },
       {
         "Ypos": 4,
         "Xpos": 3
       },
       {
-        "Ypos": 4,
-        "Xpos": 8
-      },
-      {
-        "Ypos": 3,
-        "Xpos": 5
-      },
-      {
-        "Ypos": 2,
+        "Ypos": 7,
         "Xpos": 1
-      },
-      {
-        "Ypos": 3,
-        "Xpos": 10
-      },
-      {
-        "Ypos": 5,
-        "Xpos": 0
-      },
-      {
-        "Ypos": 3,
-        "Xpos": 9
       }
     ],
     "WorldObjects": [
-      {"className": "Obstacle"},
       {
-        "damage": 2,
-        "facing": "SOUTH",
-        "maxHealth": 100,
-        "className": "Enemy",
-        "currHealth": 100
-      },
-      {
-        "damage": 2,
-        "facing": "WEST",
-        "maxHealth": 100,
-        "className": "Enemy",
-        "currHealth": 100
-      },
-      {"className": "Obstacle"},
-      {
-        "damage": 2,
+        "damage": 300,
         "facing": "NORTH",
         "maxHealth": 100,
-        "className": "Enemy",
-        "currHealth": 100
-      },
-      {"className": "Obstacle"},
-      {
-        "damage": 10,
-        "facing": "EAST",
-        "maxHealth": 100,
         "className": "Player",
-        "currHealth": 98,
-        "Inventory": []
+        "currHealth": 14,
+        "Inventory": [{
+          "DamageAdder": 10,
+          "className": "Sword"
+        }]
       },
       {
         "damage": 2,
@@ -111,14 +74,10 @@
         "DamageAdder": 10,
         "className": "Sword"
       },
-      {
-        "damage": 2,
-        "facing": "NORTH",
-        "maxHealth": 100,
-        "className": "Enemy",
-        "currHealth": 100
-      }
+      {"className": "Obstacle"},
+      {"className": "Obstacle"},
+      {"className": "Obstacle"}
     ]
   },
-  "RoomHeight": 6
+  "RoomHeight": 11
 }

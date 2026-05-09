@@ -24,7 +24,6 @@ String fileName;
 void setup() 
 {  
   fullScreen(P2D);
-  //imageMode(CENTER);
   pixelDensity(1);
   fileName = sketchPath("data/save.json");
   File file = new File(fileName);
@@ -34,7 +33,6 @@ void setup()
   {
     JSONObject data = loadJSONObject(fileName);
     scene = new Scene(data);
-    System.out.println("File loaded");
   } 
   else 
   {
