@@ -106,6 +106,8 @@ abstract class Actor extends WorldObject {
    */
 
   public boolean getActionValidity(Action action) {
+    if (action != null)
+      System.out.println(action);
     return action == null || this.validActions.getOrDefault(action, false);
   }
 
@@ -125,7 +127,27 @@ abstract class Actor extends WorldObject {
   
   public void draw()
   {
-    
+     float healthPercent = currHealth / maxHealth;
+        color healthColor;
+        // Get the healthbar color based on percent cutoffs
+        if (healthPercent > 0.5) {
+            healthColor = color(0, 204, 0);
+        } else if (healthPercent > 0.25) {
+            healthColor = color(204, 204, 0);
+        } else {
+            healthColor = color(204, 0, 0);
+        }
+        push();
+        resetMatrix();
+        //translate(position.x, position.y);
+        noStroke();
+                
+      // Draws the healthbar
+        fill(0);
+        rect(-20, 50 * -0.5 - 10, 40, 5);
+        fill(healthColor);
+        rect(-19, 50 * -0.5 - 9, 38 * healthPercent, 3);
+        pop();
   }
 
   /**

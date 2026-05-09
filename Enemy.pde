@@ -20,9 +20,9 @@ public class Enemy extends Actor
     return null;
   }
   
-  public JSONObject serialize()
-  {
-    JSONObject obj = super.serialize();
-    return obj;
+  public JSONObject serialize() {
+    JSONObject object = super.serialize();
+    object.setString("className", "Enemy");
+    return object;
   }
 }

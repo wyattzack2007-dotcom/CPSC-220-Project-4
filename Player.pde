@@ -107,7 +107,8 @@ class Player extends Actor {
     }
 
     // Check if the action can be performed
-    return this.getActionValidity(action) ? action : null;
+    return action;
+    //return getActionValidity(action) ? action : null;
   }
 
   /**
@@ -142,4 +143,10 @@ class Player extends Actor {
       debounce.put(released, false);
     }
   }
+  
+  public void draw()
+  {
+    super.draw();
+  }
+  
 }

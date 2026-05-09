@@ -28,35 +28,38 @@ class Scene {
   {
     roomWidth = 10;
     roomHeight = 10;
-    room = new WorldObject[roomWidth][roomHeight];
-    entry = Direction.NORTH;
-    enemies = null;
+    
     positions = new HashMap<>();
     doors = new HashMap<>();
+    
+    player = new Player(Direction.NORTH);
+    room = new WorldObject[roomWidth][roomHeight];
+    entry = Direction.NORTH;
+    
+    positions.put(player, new Position(5, 5, this));
     doors.put(Direction.NORTH, new Position(1, 1, this));
+    
     reset(entry);
   }
   public Scene(JSONObject data)
   {
-
+    positions = new HashMap<>();
+    doors = new HashMap<>();
+    enemies = new LinkedList<>();
     loadRoom(data.getJSONArray("Room"));
-
     entry = Direction.valueOf(data.getString("Entry"));
-
     loadDoors(data.getJSONObject("Doors"));
-    System.out.println("doors loaded");
-    reset(entry);
   }
   
   private void loadRoom(JSONArray data)
   {
     String dataType;
     JSONArray firstRow = data.getJSONArray(0);
-    room = new WorldObject[data.size()][firstRow.size()];
+    roomWidth = data.size();
+    roomHeight = firstRow.size();
+    room = new WorldObject[roomWidth][roomHeight];
     for (int i = 0; i < data.size(); i++)
     {
-      if (data.isNull(i))
-        continue;
       JSONArray row = data.getJSONArray(i);
       for (int j = 0; j < row.size(); j++)
       {
@@ -68,40 +71,38 @@ class Scene {
            continue;
         dataType = obj.getString("className");
         if (dataType.equals("Player"))
+        {
           worldObj = new Player(obj);
+          player = (Player)worldObj;
+        }
         if (dataType.equals("Enemy"))
           worldObj = new Enemy(obj);
         room[i][j] = worldObj;
+        System.out.println(i + " " + j);
+        positions.put(worldObj, new Position(i, j, this));
+        System.out.println(positions.get(worldObj).getX() + " " + positions.get(worldObj).getY());
        }
      }
    }
   
   private void loadDoors(JSONObject data)
   {
-    doors = new HashMap<>();
     Iterator<String> keys = data.keyIterator();
     while(keys.hasNext())
     {
-      
       String key = keys.next();
-      System.out.println(key);
       Position pos = new Position(data.getJSONObject(key), this);
-      System.out.println(pos);
       doors.put(Direction.valueOf(key), pos);
     }
-    System.out.println("Doors Loaded");
-
   }
   
-  
-  
+ 
   public JSONObject serialize()
   {
     JSONObject obj = new JSONObject();
     obj.setJSONArray("Room", serializeRoom());
     obj.setString("Entry", entry.name());
     obj.setJSONObject("Doors", serializeDoors());
-    System.out.println("doors worked");
     return obj;
   }
   
@@ -111,16 +112,16 @@ class Scene {
     if (doors.equals(null))
       return null;
     doors.forEach((dir, pos) -> {
-      System.out.println("test434");
       doorMap.setJSONObject(dir.name(), pos.serialize());
     });    
     return doorMap;
   }
+  
   private JSONArray serializeRoom()
   {
     JSONArray master = new JSONArray();
     for (int i = 0; i < room.length; i++)
-    {
+    {   
       JSONArray row = new JSONArray();
       for (int j = 0; j < room[i].length; j++)
       {
@@ -129,6 +130,8 @@ class Scene {
           JSONObject roomSpace = room[i][j].serialize();
           row.setJSONObject(j, roomSpace);
         }
+        else
+          row.setJSONObject(j, null);
       }
       master.setJSONArray(i, row);
     }
@@ -143,15 +146,60 @@ class Scene {
    * Description: Resets the room to a random state
    */
 
-  private void reset(Direction entry) {
-    if (entry == null) {
+  private void reset(Direction entry) {  
+    if (entry == null)
       return;
+    Position playerPos = positions.get(player);
+    System.out.println(playerPos.getX());
+    roomWidth = 10;
+    roomHeight = 10;
+    room = new WorldObject[roomWidth][roomHeight];
+    positions = new HashMap<>();
+    switch (entry)
+    {
+      case NORTH:
+        playerPos = new Position(playerPos.getX(), roomHeight-1, this);
+        break;
+      case SOUTH:
+        playerPos = new Position(playerPos.getX(), 0 , this);
+        break;
+      case EAST:
+        playerPos = new Position(0, playerPos.getY(), this);
+        break;
+      case WEST:
+        playerPos = new Position(roomWidth-1, playerPos.getY(), this);
+        break;
     }
-
-    //----------------------------\\
-    // TODO: COMPLETE THIS METHOD \\
-    //----------------------------\\
+    positions.put(player, playerPos);
+    newEntities(positions);
+    enemies = addEnemies(positions);
+    initializeRoom();
   }
+  
+  private void initializeRoom()
+  {
+    positions.forEach((obj, pos) -> {
+      if (obj instanceof Player)
+        room[pos.getX()][pos.getY()] = obj;
+    });
+  }
+  
+  private LinkedList<Actor> addEnemies(HashMap<WorldObject, Position> roomObjects)
+  {
+    LinkedList<Actor> enemies = new LinkedList<>();
+    roomObjects.forEach((obj, pos) -> {
+      if (obj instanceof Enemy) 
+        enemies.add((Actor)obj);
+    });
+    return enemies;
+  }
+  
+  private void newEntities(HashMap<WorldObject, Position> objMap)
+  {
+    Enemy enemy = new Enemy(2, 2, Direction.NORTH);
+    objMap.put(enemy, new Position(2, 2, this));
+  }
+  
 
   /**
    *      Method: private updateActions()
@@ -177,25 +225,27 @@ class Scene {
    */
 
   public boolean tryTurn() {
-    // If the player is dead, reset the room
+    // If the player is dead, reset the room    
     if (this.player == null || this.player.getHealth() == 0) {
       Direction[] directions = Direction.values();
       Direction direction = directions[int(random(directions.length))];
       this.player = new Player(direction);
       this.reset(direction);
     }
+    
 
     // Get the player's action
     Action action = this.player.getAction();
 
     // If no action was chosen, do nothing
     if (action == null) {
-      return false;
+      return true;
     }
 
     // If the player attacked or entered a new room, save the game
     Position door = this.doors.get(action.direction);
     boolean save = action.isAttack || door != null && door.equals(this.positions.get(this.player)) && this.enemies.size() == 0;
+    
 
     // If the action failed, do nothing
     if (!this.tryAction(this.player, action)) {
@@ -228,10 +278,12 @@ class Scene {
         // If the enemy attacked, save the game
         save = true;
       }
+      
     }
 
     this.updateActions(this.player);
     return save;
+    
   }
 
   /**
@@ -246,8 +298,9 @@ class Scene {
     if (!isActionValid(actor, action)) {
       return false;
     }
-
+    
     Position position = this.positions.get(actor);
+
 
     if (position == null) {
       return false;
@@ -319,7 +372,6 @@ class Scene {
     if (actor == null || action == null || actor.getHealth() == 0) {
       return false;
     }
-
     Position position = this.positions.get(actor);
 
     if (position == null) {
@@ -338,12 +390,11 @@ class Scene {
         return true;
       }
     }
-
+    
     // Check if the actor is facing a wall
     if (x < 0 || x >= this.roomWidth || y < 0 || y >= this.roomHeight) {
       return false;
     }
-
     // Check if the actor can attack
     if (action.isAttack) {
       return this.room[x][y] instanceof Actor && (actor == this.player || this.room[x][y] == this.player);
@@ -415,5 +466,32 @@ class Scene {
     //----------------------------\\
     // TODO: COMPLETE THIS METHOD \\
     //----------------------------\\
+     //Center the entire grid
+    float offsetX = (width - (roomWidth + 2) * size) / 2f;
+    float offsetY = (height - (roomHeight + 2) * size) / 2f;
+    
+    //Nested for loop for room dimensions
+    for (int x = 0; x < this.roomWidth; x++) 
+    {
+      for (int y = 0; y < this.roomHeight; y++) 
+      {
+        //Get tile positions 
+        float tileX = offsetX + (x + 1) * size;
+        float tileY = offsetY + (y + 1) * size;
+        
+        //Set draw parameters
+        if ((x % 2 == 0 && y % 2 == 1) || (x % 2 == 1 && y % 2 == 0))
+          fill(153);
+        else
+          fill(255);
+        strokeWeight(2);
+    
+        //Draw tiles
+        rect(tileX, tileY, size, size);
+      }
+    }
+    
+    //Draw a door on each wall
+ 
   }
 }
