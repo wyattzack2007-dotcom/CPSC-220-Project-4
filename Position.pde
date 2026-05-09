@@ -9,7 +9,7 @@
  * Description: A cell-based position in a room
  */
 
-class Position {
+class Position implements Cloneable{
   private int x;
   private int y;
   private Scene scene;
@@ -75,6 +75,12 @@ class Position {
     obj.setInt("Ypos", y);
     return obj;
   }
+  
+  public Position clone()
+  {
+    return new Position(this.x, this.y, this.scene);
+  }
+  
   
 
   /**

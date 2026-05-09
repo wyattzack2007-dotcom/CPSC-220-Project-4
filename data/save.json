@@ -1,37 +1,51 @@
 {
-  "Entry": "NORTH",
-  "RoomWidth": 10,
-  "Doors": {"NORTH": {
-    "Ypos": 1,
-    "Xpos": 1
-  }},
+  "Entry": "WEST",
+  "RoomWidth": 12,
+  "Doors": {
+    "NORTH": {
+      "Ypos": 0,
+      "Xpos": 8
+    },
+    "WEST": {
+      "Ypos": 0,
+      "Xpos": 0
+    },
+    "SOUTH": {
+      "Ypos": 6,
+      "Xpos": 6
+    },
+    "EAST": {
+      "Ypos": 1,
+      "Xpos": 11
+    }
+  },
   "Positions": {
     "ObjectPositions": [
       {
-        "Ypos": 2,
-        "Xpos": 3
+        "Ypos": 1,
+        "Xpos": 11
       },
       {
-        "Ypos": 2,
-        "Xpos": 2
+        "Ypos": 3,
+        "Xpos": 1
       }
     ],
     "WorldObjects": [
       {
         "damage": 10,
-        "facing": "EAST",
+        "facing": "WEST",
         "maxHealth": 100,
         "className": "Player",
         "currHealth": 100
       },
       {
-        "damage": 2,
+        "damage": 5,
         "facing": "NORTH",
-        "maxHealth": 2,
+        "maxHealth": 5,
         "className": "Enemy",
-        "currHealth": 0
+        "currHealth": 5
       }
     ]
   },
-  "RoomHeight": 10
+  "RoomHeight": 7
 }

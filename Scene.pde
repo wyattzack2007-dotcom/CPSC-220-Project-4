@@ -17,12 +17,16 @@ import java.util.Iterator;
 class Scene {
   private int roomWidth;
   private int roomHeight;
-  private WorldObject[][] room; //save done
-  private Direction entry; //save
+  private WorldObject[][] room; 
+  private Direction entry; 
   private Player player;
   private LinkedList<Actor> enemies;
   private HashMap<WorldObject, Position> positions;
-  private HashMap<Direction, Position> doors; //save
+  private HashMap<Direction, Position> doors;
+  
+  private int enemyDensity;
+  private int obstacleDensity;
+  private int interactableDensity;
 
   public Scene()
   {
@@ -37,9 +41,17 @@ class Scene {
     entry = Direction.NORTH;
     
     positions.put(player, new Position(5, 5, this));
-    doors.put(Direction.NORTH, new Position(1, 1, this));
+    
     
     reset(entry);
+  }
+  
+  private void addDoors()
+  {
+    doors.put(Direction.NORTH, new Position((int)random(roomWidth),0, this));
+    doors.put(Direction.WEST, new Position(0, (int)random(roomHeight), this)); 
+    doors.put(Direction.SOUTH, new Position((int)random(roomWidth), roomHeight-1, this));
+    doors.put(Direction.EAST, new Position(roomWidth-1, (int)random(roomHeight), this));
   }
   
   public Scene(JSONObject data)
@@ -153,26 +165,15 @@ class Scene {
   private void reset(Direction entry) {  
     if (entry == null)
       return;
-    Position playerPos = positions.get(player);
-    System.out.println(playerPos.getX());
+    this.entry = player.facing;
+    roomHeight = (int)random(5,15);
+    roomWidth = (int)random(5,15);
     room = new WorldObject[roomWidth][roomHeight];
     positions = new HashMap<>();
-    switch (entry)
-    {
-      case NORTH:
-        playerPos = new Position(playerPos.getX(), roomHeight-1, this);
-        break;
-      case SOUTH:
-        playerPos = new Position(playerPos.getX(), 0 , this);
-        break;
-      case EAST:
-        playerPos = new Position(0, playerPos.getY(), this);
-        break;
-      case WEST:
-        playerPos = new Position(roomWidth-1, playerPos.getY(), this);
-        break;
-    }
-    positions.put(player, playerPos);
+    addDoors();
+    Position newPlayerPos = doors.get(player.facing.inverse());
+    newPlayerPos = newPlayerPos.clone();
+    positions.put(player, newPlayerPos);
     newEntities(positions);
     enemies = addEnemies(positions);
     loadRoom();
@@ -192,8 +193,21 @@ class Scene {
   
   private void newEntities(HashMap<WorldObject, Position> objMap)
   {
-    Enemy enemy = new Enemy(2, 2, Direction.NORTH);
-    objMap.put(enemy, new Position(2, 2, this));
+    int randomX;
+    int randomY;
+    enemyDensity = 1;
+    obstacleDensity = 4;
+    interactableDensity = 3;
+    for (int i = 0; i < enemyDensity; i++)
+    {
+      randomX = (int)random(roomWidth);
+      randomY = (int)random(roomHeight);
+      Enemy enemy = new Enemy(5, 5, Direction.NORTH);
+      objMap.put(enemy, new Position(randomX, randomY, this));
+    }
+    
+    
+    
   }
   
 
@@ -235,7 +249,7 @@ class Scene {
 
     // If no action was chosen, do nothing
     if (action == null) {
-      return true;
+      return false;
     }
 
     // If the player attacked or entered a new room, save the game
@@ -309,7 +323,6 @@ class Scene {
     // Check if the player can enter a new room
     if (!action.isAttack && actor == this.player && action.direction != this.entry.inverse() && this.enemies.size() == 0) {
       Position door = this.doors.get(action.direction);
-
       if (door != null && door.equals(position)) {
         this.reset(action.direction);
         return true;
@@ -494,9 +507,41 @@ class Scene {
         
       }
     }
-
-    
-    
-
+    drawDoors(offsetX, offsetY, size);
   }
+  
+  private void drawDoors(float offsetX, float offsetY, float size)
+  {
+    doors.forEach((dir, pos) -> {
+      int x = pos.getX();
+      int y = pos.getY();
+      float positionX = offsetX + (x+1) * size;
+      float positionY = offsetY + (y+1)* size;
+      push();
+      if (dir == entry.inverse())
+        fill (255, 0, 0);
+      else
+        fill (0, 255, 0);
+      translate(positionX, positionY);
+      switch(dir)
+      {
+        case NORTH:
+          rect(0, -size, size, size);
+          break;
+        case SOUTH:
+          rect(0, size, size ,size);
+          break;
+        case EAST:
+          rect(size, 0, size, size);
+          break;
+        case WEST:
+          rect(-size, 0, size, size);
+          break;
+      }
+      pop();
+      
+    });    
+    
+  }
+  
 }

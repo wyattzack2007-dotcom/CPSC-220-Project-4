@@ -13,6 +13,8 @@ public class Enemy extends Actor
   void draw(float size)
   {
     super.draw(size);
+    fill(100, 102, 0);
+    circle(size/2, size/2, size/1.6);
   }
   
   public Action getAction()

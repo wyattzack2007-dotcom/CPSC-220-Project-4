@@ -147,6 +147,8 @@ class Player extends Actor {
   public void draw(float size)
   {
     super.draw(size);
+    fill(204, 102, 0);
+    circle(size/2, size/2, size/1.6);
   }
   
 }

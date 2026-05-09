@@ -106,8 +106,6 @@ abstract class Actor extends WorldObject {
    */
 
   public boolean getActionValidity(Action action) {
-    if (action != null)
-      System.out.println(action);
     return action == null || this.validActions.getOrDefault(action, false);
   }
 
@@ -142,10 +140,9 @@ public void draw(float size)
                 
       // Draws the healthbar
         fill(0);
-        rect(450/size, 450/size, size/1.15, size/24);
+        rect(size/10, size/10, size/1.25, size/24);
         fill(healthColor);
-        System.out.println(size);
-        rect(450/size, 450/size, size * healthPercent/1.15, size/24);
+        rect(size/10, size/10, size/1.25 * healthPercent, size/24);
         pop();
   }
 
