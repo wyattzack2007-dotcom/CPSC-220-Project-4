@@ -49,33 +49,39 @@ class Enemy extends Actor {
   /*      Return: Void                              */
   /* Description: Draws the enemy                   */
   /**************************************************/
-  public void draw() {
-    super.draw(); //healthbar
-    
+  public void draw() {    
     //drawing enemy
     pushMatrix();
       ellipseMode(CENTER);
       rectMode(CENTER);
-      
-      noStroke();
-      fill(100);
-      ellipse(0,5,65,65); //outer circle
+        
+      push();
+        noStroke();
+        fill(100);
+        ellipse(0,5,65,65); //outer circle
+      pop();
       
       //base structure
-      fill(255);
-      ellipse(0,0,50,35); //head
-      rect(0,20,7,20); //jaw middle
-      rect(-10,20,7,20); //jaw left
-      rect(10,20,7,20); //jaw right
+      push();
+        fill(255);
+        ellipse(0,0,50,35); //head
+        rect(0,20,7,20); //jaw middle
+        rect(-10,20,7,20); //jaw left
+        rect(10,20,7,20); //jaw right
+      pop();
       
       //face features
-      fill(0);
-      ellipse(-10,-5,10,10); //left eye
-      ellipse(10,-5,10,10); //right eye
+      push();
+        fill(0);
+        ellipse(-10,-5,10,10); //left eye
+        ellipse(10,-5,10,10); //right eye
       
-      ellipse(0,5,3,5); //nose long
-      ellipse(0,7,5,3); //nose bottom part
+        ellipse(0,5,3,5); //nose long
+        ellipse(0,7,5,3); //nose bottom part
+      pop();
     popMatrix();
+    
+    super.draw(); //draws healthbar
   }
   
   public Action getAction() {

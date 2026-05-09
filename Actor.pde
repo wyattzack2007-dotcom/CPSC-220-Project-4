@@ -125,7 +125,7 @@ abstract class Actor extends WorldObject {
   /*      Return: Void                              */
   /* Description: Constructs the health bar         */
   /**************************************************/
-  public void draw() {
+  public void draw() { //adjust as needed
     pushMatrix(); //health bar
       rectMode(CORNER);
       float barW = 0.6f; //bar width = 60% of tile width
