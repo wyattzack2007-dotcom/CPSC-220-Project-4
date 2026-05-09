@@ -1,14 +1,13 @@
-/**************************************************/
-/*      Author: Prof. Morales, Bella Olmo         */
-/*      Course: CPSC 220                          */
-/*  Instructor: Prof. Morales                     */
-/*     Created: 2026-04-15                        */
-/*         Due: 2026-05-10                        */
-/*  Assignment: Project 4                         */
-/*        File: Actor.pde                         */
-/* Description: Base class for all actors that    */ 
-/*              can perform actions               */
-/**************************************************/
+/**
+ *      Author: Prof. Morales, Patrick Walter, Bella Olmo
+ *      Course: CPSC 220
+ *  Instructor: Prof. Morales
+ *     Created: 2026-04-15
+ *         Due: 2026-05-10
+ *  Assignment: Project 4
+ *        File: Actor.pde
+ * Description: Base class for all actors that can perform actions
+ */
 
 abstract class Actor extends WorldObject {
   private int maxHealth;
@@ -82,6 +81,10 @@ abstract class Actor extends WorldObject {
   public int getDamage() {
     return this.damage;
   }
+  
+  public void setDamage(int amount) {
+    this.damage = amount;
+  }
 
   /*********************************************************************/
   /*      Method: public updateHealth()                                */
@@ -119,33 +122,59 @@ abstract class Actor extends WorldObject {
     }
   }
   
-  /**************************************************/
-  /* Constructor: draw()                            */
-  /*  Parameters: Void                              */
-  /*      Return: Void                              */
-  /* Description: Constructs the health bar         */
-  /**************************************************/
-  public void draw() { //adjust as needed
-    pushMatrix(); //health bar
-      rectMode(CORNER);
-      float barW = 0.6f; //bar width = 60% of tile width
-      float barH = .15f; //bar height = 15% of tile height
-      float barPos = 0.6f; //bar position = 60% below tile center
-      float health = this.getHealth(); //gets health percent from 0-1
-      
-      //background
-      fill(108, 108, 108); //dark grey
-      rect(-barW/2, barPos, barW, barH); //should center the bar?
-      
-      //health bar (changes colors as health dec.)
-      float red, green;
-      red = map(health, 0, 1, 255, 0); //red value increases as health goes down
-      green = map(health, 0, 1, 0, 255); //green value decreases as health goes down
-      fill(red, green, 0);
-      rect(-barW/2, barPos, barW * health, barH); //draws shrinking health bar
-    popMatrix();
+  
+  /*
+    Method: draw()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws the actor's health bar and calls the actor's draw method
+   */
+public void draw(float size)
+  {
+     float healthPercent = (float)currHealth / (float)maxHealth; //get health percentage
+        color healthColor;
+        // Get the healthbar color based on percent cutoffs
+        if (healthPercent > 0.5) {
+            healthColor = color(0, 204, 0);
+        } else if (healthPercent > 0.25) {
+            healthColor = color(204, 204, 0);
+        } else {
+            healthColor = color(204, 0, 0);
+        }
+        push();
+        noStroke();
+                
+      // Draws the healthbar
+        fill(0);
+        rect(size/10, size/10, size/1.25, size/24);
+        fill(healthColor);
+        rect(size/10, size/10, size/1.25 * healthPercent, size/24);
+        pop();
   }
-
+  
+  /**
+    Method: public getRotation()
+    Parameters: void
+    Return: none
+    Description: Rotates the drawing based on direction
+  */
+  private void getRotation()
+  {
+    switch(facing)
+    {
+      case NORTH:
+        rotate(PI);
+        break;
+      case EAST:
+        rotate(3*PI/2);
+        break;
+      case WEST:
+       rotate(PI/2);
+       break;
+      case SOUTH:
+        break;
+    }
+  }
 
 
   /*********************************************************************/

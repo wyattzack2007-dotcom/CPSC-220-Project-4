@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales
+ *      Author: Prof. Morales, Patrick Walter
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -9,7 +9,7 @@
  * Description: A cell-based position in a room
  */
 
-class Position {
+class Position implements Cloneable{
   private int x;
   private int y;
   private Scene scene;
@@ -21,10 +21,16 @@ class Position {
    *              Scene scene - The scene that contains a room
    * Description: Constructs a position in a room
    */
-
   public Position(int x, int y, Scene scene) {
     this.x = constrain(x, 0, scene.getRoomWidth() - 1);
     this.y = constrain(y, 0, scene.getRoomHeight() - 1);
+    this.scene = scene;
+  }
+  
+  private Position(JSONObject obj, Scene scene)
+  {
+    this.x = obj.getInt("Xpos");
+    this.y = obj.getInt("Ypos");
     this.scene = scene;
   }
 
@@ -56,18 +62,41 @@ class Position {
    *      Return: boolean - Whether or not the positions are equivalent
    * Description: Returns whether or not two positions are equivalent
    */
-
   public boolean equals(Position other) {
     return other != null && this.x == other.getX() && this.y == other.getY();
   }
-
+  
+    /**
+   *      Method: public serialize()
+   *  Parameters: void
+   *      Return: JSONObject - A JSON serialization of the object
+   * Description: Serializes the object to JSON
+   */
+  public JSONObject serialize()
+  {
+    JSONObject obj = new JSONObject();
+    obj.setInt("Xpos", x);
+    obj.setInt("Ypos", y);
+    return obj;
+  }
+  
+    /**
+   *      Method: public clone()
+   *  Parameters: void
+   *      Return: Position - cloned position
+   * Description: Clones this position object
+   */
+  public Position clone()
+  {
+    return new Position(this.x, this.y, this.scene);
+  }
+  
   /**
    *      Method: public move()
    *  Parameters: Direction direction - The direction to move in
    *      Return: void
    * Description: Moves in a direction, constrained to the size of the room
    */
-
   public void move(Direction direction) {
     if (direction != null) {
       this.x = constrain(this.x + direction.x, 0, this.scene.getRoomWidth() - 1);

@@ -30,6 +30,7 @@ enum Direction {
     this.x = x;
     this.y = y;
   }
+  
 
   /**
    *      Method: public inverse()

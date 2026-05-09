@@ -26,5 +26,5 @@ abstract class WorldObject {
    * Description: Draws the object
    */
 
-  abstract public void draw();
+  abstract public void draw(float size);
 }

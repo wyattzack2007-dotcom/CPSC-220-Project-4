@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales, Bella Olmo
+ *      Author: Prof. Morales, Patrick Walter, Bella Olmo
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -12,6 +12,8 @@
 class Player extends Actor {
   private char nextKey;
   private HashMap<Character, Boolean> debounce;
+  private ArrayList<Interactable> inventory;
+  PImage img;
 
   /**
    * Constructor: public Player()
@@ -22,7 +24,9 @@ class Player extends Actor {
   public Player(Direction direction) {
     super(100, 10, direction);
     this.nextKey = '\0';
+    inventory = new ArrayList<>();
     this.debounce = new HashMap<Character, Boolean>();
+    img = loadImage("data/sword.png");
   }
 
   /**
@@ -35,6 +39,18 @@ class Player extends Actor {
     super(object);
     this.nextKey = '\0';
     this.debounce = new HashMap<Character, Boolean>();
+    img = loadImage("data/sword.png");
+    inventory = new ArrayList<>();
+    JSONArray inv = object.getJSONArray("Inventory");
+    for (int i = 0; i < inv.size(); i++)
+    {
+      JSONObject item = inv.getJSONObject(i);
+      if (item.getString("className").equals("Sword"))
+      {
+        inventory.add(new Sword());
+      }
+    }
+    
   }
 
   /**
@@ -46,7 +62,15 @@ class Player extends Actor {
 
   public JSONObject serialize() {
     JSONObject object = super.serialize();
+    JSONArray inv = new JSONArray();
     object.setString("className", "Player");
+    int i = 0;
+    for (Interactable item : inventory)
+    {
+      inv.setJSONObject(i, item.serialize());
+      i++;
+    }
+    object.setJSONArray("Inventory", inv);
     return object;
   }
 
@@ -107,7 +131,24 @@ class Player extends Actor {
     }
 
     // Check if the action can be performed
-    return this.getActionValidity(action) ? action : null;
+    System.out.println(getActionValidity(action));
+    return getActionValidity(action) ? action : null;
+    
+    
+  }
+  
+    /**
+   *      Method: public addInventoryItem()
+   *  Parameters: Interactable item - equipable item
+   *      Return: none
+   * Description: adds equipable item to inventory if item is not already in it
+   */
+  public void addInventoryItem(Interactable item)
+  {
+    if(inventory.isEmpty() || inventory.stream().noneMatch(i -> i.getClass().equals(item.getClass())))
+    {
+      inventory.add(item);
+    }
   }
 
   public void draw() {    
@@ -175,4 +216,65 @@ class Player extends Actor {
       debounce.put(released, false);
     }
   }
+  
+    /*
+    Method: draw()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws the Player
+   */  
+  public void draw(float size)
+  {
+    super.draw(size); //draw health bar
+    translate(size/2, size/2); //center
+    super.getRotation(); //rotate
+     pushMatrix();
+      ellipseMode(CENTER);
+      rectMode(CENTER);
+      
+      noStroke();
+      fill(100);
+      ellipse(0,0,size/1.5,size/1.5); //outer circle
+      
+      //base structure
+      fill(255);
+      ellipse(0,0,size/2,size/2); //head
+      
+      //face features
+      fill(0);
+      ellipse(-10,0,size/10,size/10); //left eye
+      ellipse(10,0,size/10,size/10); //right eye
+      
+      //hat
+      rect(0,-size/4,size/2,size/5);
+      
+      
+    popMatrix();
+    drawItems(size); //draw any equiped items
+  }
+  
+    /*
+    Method: drawItems()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws any equipped items
+   */  
+  private void drawItems(float size)
+  {
+    //rotate item
+    rotate(PI);
+    //iterate through inventory
+    for (Interactable item : inventory) 
+    {
+      //check if equipped item is a sword
+      if (item instanceof Sword)
+      {
+        //draw it
+        img.resize(0, (int)size/2);
+        image(img, -size/2, -size/2);
+      }
+
+    }   
+  }
+  
 }
