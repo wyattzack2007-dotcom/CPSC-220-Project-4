@@ -1,5 +1,5 @@
 /**
- *      Author: Prof. Morales, Patrick Walter
+ *      Author: Prof. Morales, Patrick Walter, Bella Olmo
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -149,6 +149,39 @@ class Player extends Actor {
     {
       inventory.add(item);
     }
+  }
+
+  public void draw() {    
+    pushMatrix();
+      ellipseMode(CENTER);
+      rectMode(CENTER);
+      
+      push();
+        noStroke();
+        fill(100);
+        ellipse(0,0,65,65); //outer circle
+      pop();
+      
+      //base structure
+      push();
+      fill(255);
+      ellipse(0,0,45,45); //head
+      pop();
+      
+      //other features
+      push();
+        //face
+        fill(0);
+        ellipse(-10,0,10,10); //left eye
+        ellipse(10,0,10,10); //right eye
+      
+        //hat
+        rect(-4,-15,45,7);
+        rect(1,-20,35,10);
+      pop();
+    popMatrix();
+    
+    super.draw();
   }
 
   /**
