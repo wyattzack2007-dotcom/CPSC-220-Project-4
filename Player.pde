@@ -144,9 +144,9 @@ class Player extends Actor {
     }
   }
   
-  public void draw()
+  public void draw(float size)
   {
-    super.draw();
+    super.draw(size);
   }
   
 }

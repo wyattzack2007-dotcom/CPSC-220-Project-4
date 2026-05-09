@@ -10,9 +10,9 @@ public class Enemy extends Actor
     super(obj);
   }
   
-  void draw()
+  void draw(float size)
   {
-    super.draw();
+    super.draw(size);
   }
   
   public Action getAction()

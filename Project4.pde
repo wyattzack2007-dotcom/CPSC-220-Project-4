@@ -22,8 +22,7 @@ String fileName;
 /* Description: Constructs a scene from JSON save data or in a random state */
 /****************************************************************************/
 void setup() 
-{
-  
+{  
   fullScreen(P2D);
   pixelDensity(1);
   fileName = sketchPath("data/save.json");
@@ -53,7 +52,10 @@ void setup()
 /****************************************************************************************************************/
 void draw() 
 {
+      
+
   background(0);
+  
   if (scene.tryTurn()) 
   {
     // Save the state of the scene

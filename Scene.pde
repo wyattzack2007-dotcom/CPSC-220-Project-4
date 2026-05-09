@@ -58,9 +58,7 @@ class Scene {
     loadDoors(data.getJSONObject("Doors"));
     loadRoom();
   }
-  
  
-  
   public JSONObject serialize()
   {
     JSONObject obj = new JSONObject();
@@ -157,8 +155,6 @@ class Scene {
       return;
     Position playerPos = positions.get(player);
     System.out.println(playerPos.getX());
-    roomWidth = 10;
-    roomHeight = 10;
     room = new WorldObject[roomWidth][roomHeight];
     positions = new HashMap<>();
     switch (entry)
@@ -469,7 +465,7 @@ class Scene {
      //Center the entire grid
     float offsetX = (width - (roomWidth + 2) * size) / 2f;
     float offsetY = (height - (roomHeight + 2) * size) / 2f;
-    
+
     //Nested for loop for room dimensions
     for (int x = 0; x < this.roomWidth; x++) 
     {
@@ -487,9 +483,20 @@ class Scene {
         strokeWeight(2);
     
         //Draw tiles
-        rect(tileX, tileY, size, size);
+        push();
+        translate(tileX, tileY);
+        rect(0, 0, size, size);
+        if (room[x][y] != null)
+        {
+          room[x][y].draw(size);
+        }
+        pop();
+        
       }
     }
+
+    
+    
 
   }
 }

@@ -8,8 +8,8 @@
   "Positions": {
     "ObjectPositions": [
       {
-        "Ypos": 1,
-        "Xpos": 2
+        "Ypos": 2,
+        "Xpos": 3
       },
       {
         "Ypos": 2,
@@ -19,7 +19,7 @@
     "WorldObjects": [
       {
         "damage": 10,
-        "facing": "SOUTH",
+        "facing": "EAST",
         "maxHealth": 100,
         "className": "Player",
         "currHealth": 100
@@ -29,7 +29,7 @@
         "facing": "NORTH",
         "maxHealth": 2,
         "className": "Enemy",
-        "currHealth": 2
+        "currHealth": 0
       }
     ]
   },

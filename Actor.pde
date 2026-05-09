@@ -125,7 +125,7 @@ abstract class Actor extends WorldObject {
     }
   }
   
-  public void draw()
+public void draw(float size)
   {
      float healthPercent = currHealth / maxHealth;
         color healthColor;
@@ -138,15 +138,14 @@ abstract class Actor extends WorldObject {
             healthColor = color(204, 0, 0);
         }
         push();
-        resetMatrix();
-        //translate(position.x, position.y);
         noStroke();
                 
       // Draws the healthbar
         fill(0);
-        rect(-20, 50 * -0.5 - 10, 40, 5);
+        rect(450/size, 450/size, size/1.15, size/24);
         fill(healthColor);
-        rect(-19, 50 * -0.5 - 9, 38 * healthPercent, 3);
+        System.out.println(size);
+        rect(450/size, 450/size, size * healthPercent/1.15, size/24);
         pop();
   }
 
