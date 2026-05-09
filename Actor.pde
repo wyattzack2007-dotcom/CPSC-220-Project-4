@@ -130,7 +130,6 @@ abstract class Actor extends WorldObject {
 public void draw(float size)
   {
      float healthPercent = (float)currHealth / (float)maxHealth;
-         System.out.println(healthPercent);
 
         color healthColor;
         // Get the healthbar color based on percent cutoffs

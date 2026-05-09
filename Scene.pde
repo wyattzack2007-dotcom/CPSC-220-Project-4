@@ -225,7 +225,7 @@ class Scene {
   
   private void newEntities(HashMap<WorldObject, Position> objMap)
   {
-    enemyDensity = 1;
+    enemyDensity = 5;
     obstacleDensity = 4;
     interactableDensity = 1;
 

@@ -1,0 +1,124 @@
+{
+  "Entry": "EAST",
+  "RoomWidth": 12,
+  "Doors": {
+    "NORTH": {
+      "Ypos": 0,
+      "Xpos": 9
+    },
+    "WEST": {
+      "Ypos": 2,
+      "Xpos": 0
+    },
+    "SOUTH": {
+      "Ypos": 5,
+      "Xpos": 4
+    },
+    "EAST": {
+      "Ypos": 4,
+      "Xpos": 11
+    }
+  },
+  "Positions": {
+    "ObjectPositions": [
+      {
+        "Ypos": 3,
+        "Xpos": 1
+      },
+      {
+        "Ypos": 2,
+        "Xpos": 5
+      },
+      {
+        "Ypos": 0,
+        "Xpos": 1
+      },
+      {
+        "Ypos": 4,
+        "Xpos": 7
+      },
+      {
+        "Ypos": 4,
+        "Xpos": 3
+      },
+      {
+        "Ypos": 4,
+        "Xpos": 8
+      },
+      {
+        "Ypos": 3,
+        "Xpos": 5
+      },
+      {
+        "Ypos": 2,
+        "Xpos": 1
+      },
+      {
+        "Ypos": 3,
+        "Xpos": 10
+      },
+      {
+        "Ypos": 5,
+        "Xpos": 0
+      },
+      {
+        "Ypos": 3,
+        "Xpos": 9
+      }
+    ],
+    "WorldObjects": [
+      {"className": "Obstacle"},
+      {
+        "damage": 2,
+        "facing": "SOUTH",
+        "maxHealth": 100,
+        "className": "Enemy",
+        "currHealth": 100
+      },
+      {
+        "damage": 2,
+        "facing": "WEST",
+        "maxHealth": 100,
+        "className": "Enemy",
+        "currHealth": 100
+      },
+      {"className": "Obstacle"},
+      {
+        "damage": 2,
+        "facing": "NORTH",
+        "maxHealth": 100,
+        "className": "Enemy",
+        "currHealth": 100
+      },
+      {"className": "Obstacle"},
+      {
+        "damage": 10,
+        "facing": "EAST",
+        "maxHealth": 100,
+        "className": "Player",
+        "currHealth": 98,
+        "Inventory": []
+      },
+      {
+        "damage": 2,
+        "facing": "EAST",
+        "maxHealth": 100,
+        "className": "Enemy",
+        "currHealth": 100
+      },
+      {"className": "Obstacle"},
+      {
+        "DamageAdder": 10,
+        "className": "Sword"
+      },
+      {
+        "damage": 2,
+        "facing": "NORTH",
+        "maxHealth": 100,
+        "className": "Enemy",
+        "currHealth": 100
+      }
+    ]
+  },
+  "RoomHeight": 6
+}
