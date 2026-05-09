@@ -84,6 +84,10 @@ abstract class Actor extends WorldObject {
   public int getDamage() {
     return this.damage;
   }
+  
+  public void setDamage(int amount) {
+    this.damage = amount;
+  }
 
   /**
    *      Method: public updateHealth()
@@ -125,7 +129,9 @@ abstract class Actor extends WorldObject {
   
 public void draw(float size)
   {
-     float healthPercent = currHealth / maxHealth;
+     float healthPercent = (float)currHealth / (float)maxHealth;
+         System.out.println(healthPercent);
+
         color healthColor;
         // Get the healthbar color based on percent cutoffs
         if (healthPercent > 0.5) {

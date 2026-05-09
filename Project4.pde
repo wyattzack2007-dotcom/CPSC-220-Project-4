@@ -24,6 +24,7 @@ String fileName;
 void setup() 
 {  
   fullScreen(P2D);
+  //imageMode(CENTER);
   pixelDensity(1);
   fileName = sketchPath("data/save.json");
   File file = new File(fileName);

@@ -12,6 +12,8 @@
 class Player extends Actor {
   private char nextKey;
   private HashMap<Character, Boolean> debounce;
+  private ArrayList<Interactable> inventory;
+  PImage img;
 
   /**
    * Constructor: public Player()
@@ -22,7 +24,9 @@ class Player extends Actor {
   public Player(Direction direction) {
     super(100, 10, direction);
     this.nextKey = '\0';
+    inventory = new ArrayList<>();
     this.debounce = new HashMap<Character, Boolean>();
+    img = loadImage("data/sword.png");
   }
 
   /**
@@ -35,6 +39,18 @@ class Player extends Actor {
     super(object);
     this.nextKey = '\0';
     this.debounce = new HashMap<Character, Boolean>();
+    img = loadImage("data/sword.png");
+    inventory = new ArrayList<>();
+    JSONArray inv = object.getJSONArray("Inventory");
+    for (int i = 0; i < inv.size(); i++)
+    {
+      JSONObject item = inv.getJSONObject(i);
+      if (item.getString("className").equals("Sword"))
+      {
+        inventory.add(new Sword());
+      }
+    }
+    
   }
 
   /**
@@ -46,7 +62,15 @@ class Player extends Actor {
 
   public JSONObject serialize() {
     JSONObject object = super.serialize();
+    JSONArray inv = new JSONArray();
     object.setString("className", "Player");
+    int i = 0;
+    for (Interactable item : inventory)
+    {
+      inv.setJSONObject(i, item.serialize());
+      i++;
+    }
+    object.setJSONArray("Inventory", inv);
     return object;
   }
 
@@ -110,6 +134,12 @@ class Player extends Actor {
     return action;
     //return getActionValidity(action) ? action : null;
   }
+  
+  public void addInventoryItem(Interactable item)
+  {
+    if (!inventory.contains(item))
+      inventory.add(item);
+  }
 
   /**
    *      Method: public keyPressed()
@@ -149,6 +179,20 @@ class Player extends Actor {
     super.draw(size);
     fill(204, 102, 0);
     circle(size/2, size/2, size/1.6);
+    drawItems(size);
+  }
+  
+  private void drawItems(float size)
+  {
+    for (Interactable item : inventory)
+    {
+      if (item instanceof Sword)
+      {
+        img.resize(0, (int)size/2);
+        image(img, 0, 0);
+      }
+      
+    }   
   }
   
 }

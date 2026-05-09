@@ -131,6 +131,14 @@ class Scene {
         worldObj = new Enemy(JSONObj);
         enemies.add((Enemy)worldObj);
       }
+      if (dataType.equals("Obstacle"))
+      {
+        worldObj = new Obstacle();
+      }
+      if (dataType.equals("Sword"))
+      {
+        worldObj = new Sword();
+      }
       objPos = new Position(objPositions.getJSONObject(i), this);
       positions.put(worldObj, objPos);
     } 
@@ -174,9 +182,9 @@ class Scene {
     Position newPlayerPos = doors.get(player.facing.inverse());
     newPlayerPos = newPlayerPos.clone();
     positions.put(player, newPlayerPos);
+    room[newPlayerPos.getX()][newPlayerPos.getY()] = player;
     newEntities(positions);
     enemies = addEnemies(positions);
-    loadRoom();
   }
   
 
@@ -191,20 +199,58 @@ class Scene {
     return enemies;
   }
   
+  private Position getValidPosition()
+  {
+    boolean valid = false;
+    boolean inDoors = false;
+    int randomX = 0;
+    int randomY = 0;
+    while (!valid)
+    {
+      inDoors = false;
+        randomX = (int)random(roomWidth);
+        randomY = (int)random(roomHeight);
+        for (Position pos : doors.values())
+          if (pos.getX() == randomX && pos.getY() == randomY)
+          {
+            inDoors = true;
+            break;
+          }
+        if (room[randomX][randomY] == null && !inDoors)
+          valid = true;
+      }
+    return new Position(randomX, randomY, this); 
+  }
+  
+  
   private void newEntities(HashMap<WorldObject, Position> objMap)
   {
-    int randomX;
-    int randomY;
     enemyDensity = 1;
     obstacleDensity = 4;
-    interactableDensity = 3;
+    interactableDensity = 1;
+
     for (int i = 0; i < enemyDensity; i++)
     {
-      randomX = (int)random(roomWidth);
-      randomY = (int)random(roomHeight);
-      Enemy enemy = new Enemy(5, 5, Direction.NORTH);
-      objMap.put(enemy, new Position(randomX, randomY, this));
+      Enemy enemy = new Enemy(100, 2, Direction.NORTH);
+      Position validPos = getValidPosition();
+      objMap.put(enemy, validPos);
+      room[validPos.getX()][validPos.getY()] = enemy;
     }
+    for (int i = 0; i < obstacleDensity; i++)
+    {
+      Obstacle obstacle = new Obstacle();
+      Position validPos = getValidPosition();
+      objMap.put(obstacle, validPos);
+      room[validPos.getX()][validPos.getY()] = obstacle;
+    }
+    for (int i = 0; i < interactableDensity; i++)
+    {
+      Sword sword = new Sword();
+      Position validPos = getValidPosition();
+      objMap.put(sword, validPos);
+      room[validPos.getX()][validPos.getY()] = sword;
+    }
+    
     
     
     
@@ -267,6 +313,7 @@ class Scene {
 
       // Remove dead enemies
       if (enemy.getHealth() == 0) {
+        positions.remove(enemy);
         this.enemies.remove(i--);
         continue;
       }
@@ -343,9 +390,9 @@ class Scene {
 
         if (enemy.getHealth() > 0) {
           enemy.updateHealth(-actor.getDamage());
-        } else {
-          this.room[x][y] = null;
-        }
+          if (enemy.getHealth() <= 0)
+             this.room[x][y] = null;
+        } 
       }
 
       return isActionValid;
@@ -357,6 +404,10 @@ class Scene {
 
       if (!interactable.interact(this.player)) {
         return false;
+      }
+      else
+      {
+        positions.remove(interactable);
       }
     } else if (this.room[x][y] != null) {
       return false;
