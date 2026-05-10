@@ -27,7 +27,6 @@ class Scene {
   private int enemyDensity; //amount of enemies to be spawned
   private int obstacleDensity; //amount of obstacles to be spawned
   private int interactableDensity; //amount of interactables to be spawned
-  private int durability = 50;
   
   
   /*
@@ -368,7 +367,6 @@ class Scene {
       int r = round(random(0,5));
       if(r == 1)
       {
-        println(r);
         //currently only sword
         Sword sword = new Sword();
         Position validPos = getValidPosition();

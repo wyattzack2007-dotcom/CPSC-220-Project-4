@@ -10,8 +10,7 @@
                 object
  */
 public class Sword extends Interactable {
-  
-  public int durability;
+ 
   private int damageAdder; //damage to be added when sword is equipped
   PImage img; //sword image
   
@@ -23,7 +22,6 @@ public class Sword extends Interactable {
   public Sword()
   {
     damageAdder = 10;
-    durability = 50;
     img = loadImage("data/sword.png");
   }
   
