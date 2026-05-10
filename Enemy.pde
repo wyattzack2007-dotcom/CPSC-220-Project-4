@@ -1,97 +1,46 @@
-/****************************************************/
-/*      Author: Bella Olmo                          */
-/*      Course: CPSC 220                            */
-/*  Instructor: Prof. Morales                       */
-/*     Created: 2026-04-15                          */
-/*         Due: 2026-05-10                          */
-/*  Assignment: Project 4                           */
-/*        File: Enemy.pde                           */
-/* Description: The enemy the player must fight     */
-/****************************************************/
+/**
+ *      Author: Patrick Walter, 
+ *      Course: CPSC 220
+ *  Instructor: Prof. Morales
+ *     Created: 2026-04-15
+ *         Due: 2026-05-10
+ *  Assignment: Project 4
+ *        File: Enemy.pde
+ * Description: Handles the Enemy
+ */
+public class Enemy extends Actor
+{
+  public Action lastAction; //last movement action for ai
+  
+  /**
+   * Constructor: public Enemy()
+   *  Parameters: int health - the health of the enemy, int damage - The damage of the enemy, Direction direction - The direction to face
+   * Description: Constructs an enemy in a new room
+   */
+  public Enemy(int health, int damage, Direction facing)
+  {
+    super(health, damage, facing);
+  }
+  
+  /**
+   * Constructor: public Enemy()
+   * Parameters: JSONObject obj - Saved Enemy information
+   * Description: Constructs an enemy in a new room based on save data
+   */
+  public Enemy(JSONObject obj)
+  {
+    super(obj);
+  }
 
-class Enemy extends Actor {
-  
-  /**************************************************/
-  /* Constructor: public Enemy()                    */
-  /*  Parameters: Direction direction - The         */
-  /*              direction to face                 */
-  /* Description: Constructs a enemy in a new room  */
-  /**************************************************/
-  public Enemy(Direction direction) { 
-    super(100, 4, direction); //100 health, 4 damage
-  }
-  
-  /**************************************************/
-  /* Constructor: public Enemy()                    */
-  /*  Parameters: JSONObject object - How the       */
-  /*              data is saved                     */
-  /* Description: Constructs enemy from JSON data   */
-  /**************************************************/
-  public Enemy(JSONObject object) {
-    super(object);
-  }
-  
-  /**************************************************/
-  /* Constructor: public serialize()                */
-  /*  Parameters: JSONObject - JSON serialization   */
-  /*              of the object                     */
-  /* Description: Serializes the JSON object        */
-  /**************************************************/
-  public JSONObject serialize() {
-    JSONObject object = super.serialize();
-    object.setString("className", "Enemy");
-    return object;
-  }
-  
-  /**************************************************/
-  /* Constructor: draw()                            */
-  /*  Parameters: Void                              */
-  /*      Return: Void                              */
-  /* Description: Draws the enemy                   */
-  /**************************************************/
-  public void draw() {    
-    //drawing enemy
-    pushMatrix();
-      ellipseMode(CENTER);
-      rectMode(CENTER);
-        
-      push();
-        noStroke();
-        fill(100);
-        ellipse(0,5,65,65); //outer circle
-      pop();
-      
-      //base structure
-      push();
-        fill(255);
-        ellipse(0,0,50,35); //head
-        rect(0,20,7,20); //jaw middle
-        rect(-10,20,7,20); //jaw left
-        rect(10,20,7,20); //jaw right
-      pop();
-      
-      //face features
-      push();
-        fill(0);
-        ellipse(-10,-5,10,10); //left eye
-        ellipse(10,-5,10,10); //right eye
-      
-        ellipse(0,5,3,5); //nose long
-        ellipse(0,7,5,3); //nose bottom part
-      pop();
-    popMatrix();
+  /**
+   *      Method: public getAction()
+   *  Parameters: none
+   *      Return: Action atk/movement - the action of the enemy
+   * Description: Gets enemy Action
+   */
+  public Action getAction()
+  {
     
-    super.draw(); //draws healthbar
-  }
-  
-  
-  /*********************************************************/
-  /*      Method: public getAction()                       */
-  /*  Parameters: void                                     */
-  /*      Return: Action - The selected action to perform  */
-  /* Description: Selects an action to perform             */
-  /*********************************************************/
-  public Action getAction() {
     //attack
     for(Action atk : Action.values()) { //loops through list of actions
       if(atk.isAttack && getActionValidity(atk)) { //checks attack validity
@@ -109,13 +58,64 @@ class Enemy extends Actor {
       };
       
       //movement randomization
-      for(int i = 0; i < 4; i++) { 
-        Action movement = move[(int)random(4)];
-        if(getActionValidity(movement)) {
-          this.facing = movement.direction; //change facing direction of enemy
-          return movement; //move
+     
+      Action movement;
+      
+      //loop while we don't have a valid action
+      while (true)
+      {
+        int weight = (int)random(2); //weight for continuing in set direction
+        if (weight == 1 && lastAction != null && !lastAction.isAttack)
+        {
+          movement = lastAction; //move in last direction
+        }
+        else
+        {
+           movement = move[(int)random(4)]; //choose random direction
+           lastAction = movement; //set new last direction
+        }
+          if(getActionValidity(movement)) {
+            this.facing = movement.direction; //change facing direction of enemy
+            return movement; //move
         }
       }
-    return null; //removes error
   }
+  
+    /**
+   *      Method: public serialize()
+   *  Parameters: void
+   *      Return: JSONObject - A JSON serialization of the object
+   * Description: Serializes the object to JSON
+   */
+  public JSONObject serialize() {
+    JSONObject object = super.serialize();
+    object.setString("className", "Enemy"); //save class name
+    return object;
+  }
+  
+  /*
+    Method: draw()
+    Parameters: float size, size of the grid
+    Return: none
+    Description: draws the enemy
+   */  
+  void draw(float size)
+  {
+    super.draw(size); //draw health bar
+    
+    //center drawing
+    translate(size/2, size/2);
+    
+    //rotate
+    super.getRotation();
+    
+    //Create eye shape
+    fill(255, 255, 255);
+    circle(0, 0, size/1.6);
+    fill(255, 0, 0);
+    ellipse(0, size/5, size/2, size/5); 
+    fill(0, 0, 0);
+    ellipse(0, size/4, size/5, size/7);
+  }
+    
 }

@@ -22,12 +22,13 @@ String fileName;
 /* Description: Constructs a scene from JSON save data or in a random state */
 /****************************************************************************/
 void setup() 
-{
+{  
   fullScreen(P2D);
   pixelDensity(1);
-  fileName = "data" + File.separator + "save.json";
+  fileName = sketchPath("data/save.json");
   File file = new File(fileName);
-
+  
+  
   if (file.exists()) 
   {
     JSONObject data = loadJSONObject(fileName);
@@ -50,13 +51,16 @@ void setup()
 /****************************************************************************************************************/
 void draw() 
 {
-  background(0);
+      
 
+  background(0);
+  
   if (scene.tryTurn()) 
   {
     // Save the state of the scene
     saveJSONObject(scene.serialize(), fileName);
   }
+  
   scene.draw();
 }
 
