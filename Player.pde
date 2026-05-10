@@ -1,5 +1,6 @@
 /**
  *      Author: Prof. Morales, Patrick Walter, Bella Olmo
+ *      Author: Prof. Morales, Patrick Walter
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -227,7 +228,8 @@ class Player extends Actor {
     Return: none
     Description: draws any equipped items
    */  
-  private void drawItems(float size)
+
+  public void drawItems(float size)
   {
     //rotate item
     rotate(PI);

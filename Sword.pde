@@ -10,7 +10,7 @@
                 object
  */
 public class Sword extends Interactable {
-  
+
   private int damageAdder; //damage to be added when sword is equipped
   PImage img; //sword image
   

@@ -57,7 +57,9 @@ void draw()
       
 
   background(0);
+
   music.amp(.1);
+
   
   if (scene.tryTurn()) 
   {
