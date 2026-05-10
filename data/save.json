@@ -1,75 +1,86 @@
 {
-  "Entry": "NORTH",
-  "RoomWidth": 8,
+  "Entry": "SOUTH",
+  "RoomWidth": 14,
   "Doors": {
     "NORTH": {
       "Ypos": 0,
       "Xpos": 2
     },
     "WEST": {
-      "Ypos": 7,
+      "Ypos": 11,
       "Xpos": 0
     },
     "SOUTH": {
-      "Ypos": 13,
-      "Xpos": 3
+      "Ypos": 11,
+      "Xpos": 5
     },
     "EAST": {
-      "Ypos": 5,
-      "Xpos": 7
+      "Ypos": 1,
+      "Xpos": 13
     }
   },
   "Positions": {
     "ObjectPositions": [
       {
-        "Ypos": 4,
+        "Ypos": 0,
+        "Xpos": 0
+      },
+      {
+        "Ypos": 6,
+        "Xpos": 0
+      },
+      {
+        "Ypos": 7,
+        "Xpos": 0
+      },
+      {
+        "Ypos": 5,
         "Xpos": 1
       },
       {
-        "Ypos": 13,
-        "Xpos": 3
+        "Ypos": 9,
+        "Xpos": 7
       },
       {
         "Ypos": 7,
-        "Xpos": 3
+        "Xpos": 7
       },
       {
         "Ypos": 7,
-        "Xpos": 4
-      },
-      {
-        "Ypos": 2,
-        "Xpos": 3
-      },
-      {
-        "Ypos": 11,
-        "Xpos": 6
+        "Xpos": 2
       }
     ],
     "WorldObjects": [
       {"className": "Obstacle"},
+      {"className": "Obstacle"},
+      {"className": "Obstacle"},
       {
-        "damage": 30,
-        "facing": "NORTH",
+        "damage": 20,
+        "facing": "SOUTH",
         "maxHealth": 100,
         "className": "Player",
-        "currHealth": 2,
+        "currHealth": 12,
         "Inventory": [{
+          "maxDurability": 25,
           "DamageAdder": 10,
-          "className": "Sword"
+          "className": "Sword",
+          "currentDurability": 3
         }]
       },
       {"className": "Obstacle"},
       {
-        "damage": 2,
-        "facing": "WEST",
-        "maxHealth": 100,
-        "className": "Enemy",
-        "currHealth": 100
+        "maxDurability": 25,
+        "DamageAdder": 10,
+        "className": "Sword",
+        "currentDurability": 25
       },
-      {"className": "Obstacle"},
-      {"className": "Obstacle"}
+      {
+        "maxDurability": 25,
+        "DamageAdder": 10,
+        "className": "Sword",
+        "currentDurability": 25
+      }
     ]
   },
-  "RoomHeight": 14
+  "RoomHeight": 12
 }

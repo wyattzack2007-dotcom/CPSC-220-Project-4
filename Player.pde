@@ -13,6 +13,7 @@ class Player extends Actor {
   private char nextKey;
   private HashMap<Character, Boolean> debounce;
   private ArrayList<Interactable> inventory;
+  private Sword equippedSword;
   PImage img;
 
   /**
@@ -27,6 +28,7 @@ class Player extends Actor {
     inventory = new ArrayList<>();
     this.debounce = new HashMap<Character, Boolean>();
     img = loadImage("data/sword.png");
+    this.equippedSword = null;
   }
 
   /**
@@ -47,7 +49,9 @@ class Player extends Actor {
       JSONObject item = inv.getJSONObject(i);
       if (item.getString("className").equals("Sword"))
       {
-        inventory.add(new Sword());
+        Sword sword = new Sword(item);
+        inventory.add(sword);
+        equipSword(sword); 
       }
     }
     
@@ -129,7 +133,11 @@ class Player extends Actor {
 
       break;
     }
-
+    
+    if (action != null && action.isAttack) {
+      onAttack();
+    }
+    
     // Check if the action can be performed
     System.out.println(getActionValidity(action));
     return getActionValidity(action) ? action : null;
@@ -147,10 +155,65 @@ class Player extends Actor {
   {
     if(inventory.isEmpty() || inventory.stream().noneMatch(i -> i.getClass().equals(item.getClass())))
     {
+      if (item instanceof Sword) {
+      Sword sword = (Sword) item;
+      inventory.add(sword);
+      equipSword(sword);           // Auto-equip sword when picked up
+      } 
+      else if (!inventory.contains(item)) {
       inventory.add(item);
+      }
     }
   }
-
+  
+    /**
+   *      Method: public removeInventoryItem()
+   *  Parameters: Interactable item - equipable item
+   *      Return: none
+   * Description: removes equipable item
+   */
+   public void removeInventoryItem(Interactable item) {
+    inventory.remove(item);
+    if (item == equippedSword) {
+      equippedSword = null;
+    }
+  }
+  
+   /**
+   *      Method: public equipSword()
+   *  Parameters: Sword sword
+   *      Return: none
+   * Description: sets the equip sword variable
+   */
+  public void equipSword(Sword sword) {
+    this.equippedSword = sword;
+  }
+  
+   /**
+   *      Method: public getEquippedSword()
+   *  Parameters: void
+   *      Return: equippedSword
+   * Description: gets the value of equipped sword
+   */
+  public Sword getEquippedSword() {
+    return equippedSword;
+  }
+  
+  /**
+   *      Method: public onAttack()
+   *  Parameters: void
+   *      Return: none
+   * Description: determins if the attack was with a sword
+   */
+  public void onAttack() {
+    if (equippedSword != null) {
+      boolean success = equippedSword.useOnAttack(this);
+      if (!success) {
+        equippedSword = null; 
+      }
+    }
+  }
+  
   /**
    *      Method: public keyPressed()
    *  Parameters: void

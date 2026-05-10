@@ -1,5 +1,9 @@
 /**
+<<<<<<< HEAD
  *      Author: Patrick Walter, 
+=======
+ *      Author: Bella Ormo, Patrick Walter 
+>>>>>>> 958d215e195dd19e0ab58493e1d43f67d8bd6a56
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15

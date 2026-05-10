@@ -1,5 +1,9 @@
 /**
+<<<<<<< HEAD
  *      Author: Prof. Morales, Patrick Walter
+=======
+ *      Author: Prof. Morales, Patrick Walter, Bella Olmo
+>>>>>>> 958d215e195dd19e0ab58493e1d43f67d8bd6a56
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -181,12 +185,12 @@ public void draw(float size)
     }
   }
 
+
   /**
    *      Method: public getAction()
    *  Parameters: void
    *      Return: Action - The selected action to perform
    * Description: Selects an action to perform
    */
-
   abstract public Action getAction();
 }

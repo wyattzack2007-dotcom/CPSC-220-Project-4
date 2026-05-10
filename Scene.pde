@@ -1,5 +1,9 @@
 /**
+<<<<<<< HEAD
  *      Author: Prof. Morales, Patrick Walter, Wyatt Zackowski
+=======
+ *      Author: Prof. Morales, Patrick Walter
+>>>>>>> 958d215e195dd19e0ab58493e1d43f67d8bd6a56
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -27,7 +31,6 @@ class Scene {
   private int enemyDensity; //amount of enemies to be spawned
   private int obstacleDensity; //amount of obstacles to be spawned
   private int interactableDensity; //amount of interactables to be spawned
-  
   
   /*
     Constructor: public Scene()
@@ -363,6 +366,7 @@ class Scene {
     //loop for interactables
     for (int i = 0; i < interactableDensity; i++)
     {
+
       //Chance for sword to spawn
       int r = round(random(0,5));
       if(r == 1)
@@ -375,6 +379,15 @@ class Scene {
         objMap.put(sword, validPos);
         room[validPos.getX()][validPos.getY()] = sword;
       }
+
+      //currently only sword
+      Sword sword = new Sword();
+      Position validPos = getValidPosition();
+      
+      //add to hashmap and room array
+      objMap.put(sword, validPos);
+      room[validPos.getX()][validPos.getY()] = sword;
+
     }
   }
   
