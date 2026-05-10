@@ -379,15 +379,6 @@ class Scene {
         objMap.put(sword, validPos);
         room[validPos.getX()][validPos.getY()] = sword;
       }
-
-      //currently only sword
-      Sword sword = new Sword();
-      Position validPos = getValidPosition();
-      
-      //add to hashmap and room array
-      objMap.put(sword, validPos);
-      room[validPos.getX()][validPos.getY()] = sword;
-
     }
   }
   

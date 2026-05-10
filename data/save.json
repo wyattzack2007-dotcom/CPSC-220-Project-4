@@ -1,86 +1,66 @@
 {
-  "Entry": "SOUTH",
-  "RoomWidth": 14,
+  "Entry": "NORTH",
+  "RoomWidth": 10,
   "Doors": {
     "NORTH": {
       "Ypos": 0,
-      "Xpos": 2
+      "Xpos": 3
     },
     "WEST": {
-      "Ypos": 11,
+      "Ypos": 9,
       "Xpos": 0
     },
     "SOUTH": {
-      "Ypos": 11,
-      "Xpos": 5
+      "Ypos": 13,
+      "Xpos": 6
     },
     "EAST": {
-      "Ypos": 1,
-      "Xpos": 13
+      "Ypos": 5,
+      "Xpos": 9
     }
   },
   "Positions": {
     "ObjectPositions": [
       {
-        "Ypos": 0,
-        "Xpos": 0
-      },
-      {
-        "Ypos": 6,
-        "Xpos": 0
-      },
-      {
-        "Ypos": 7,
-        "Xpos": 0
-      },
-      {
-        "Ypos": 5,
+        "Ypos": 1,
         "Xpos": 1
       },
       {
-        "Ypos": 9,
+        "Ypos": 3,
+        "Xpos": 3
+      },
+      {
+        "Ypos": 8,
+        "Xpos": 1
+      },
+      {
+        "Ypos": 11,
         "Xpos": 7
       },
       {
-        "Ypos": 7,
-        "Xpos": 7
-      },
-      {
-        "Ypos": 7,
-        "Xpos": 2
+        "Ypos": 12,
+        "Xpos": 9
       }
     ],
     "WorldObjects": [
       {"className": "Obstacle"},
       {"className": "Obstacle"},
       {"className": "Obstacle"},
+      {"className": "Obstacle"},
       {
         "damage": 20,
-        "facing": "SOUTH",
+        "facing": "NORTH",
         "maxHealth": 100,
         "className": "Player",
-        "currHealth": 12,
+        "currHealth": 34,
         "Inventory": [{
           "maxDurability": 25,
           "DamageAdder": 10,
           "className": "Sword",
-          "currentDurability": 3
+          "currentDurability": 14
         }]
-      },
-      {"className": "Obstacle"},
-      {
-        "maxDurability": 25,
-        "DamageAdder": 10,
-        "className": "Sword",
-        "currentDurability": 25
-      },
-      {
-        "maxDurability": 25,
-        "DamageAdder": 10,
-        "className": "Sword",
-        "currentDurability": 25
       }
     ]
   },
-  "RoomHeight": 12
+  "RoomHeight": 14
 }
