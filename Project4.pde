@@ -14,6 +14,7 @@ import processing.sound.*;
 //Global Variables
 Scene scene;
 String fileName;
+SoundFile music;
 
 /****************************************************************************/
 /* Method: setup()                                                          */
@@ -25,6 +26,8 @@ void setup()
 {  
   fullScreen(P2D);
   pixelDensity(1);
+  music = new SoundFile(this, "data/music.mp3");
+  music.loop();
   fileName = sketchPath("data/save.json");
   File file = new File(fileName);
   
@@ -54,6 +57,7 @@ void draw()
       
 
   background(0);
+  music.amp(.1);
   
   if (scene.tryTurn()) 
   {
