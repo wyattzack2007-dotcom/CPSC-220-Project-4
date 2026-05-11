@@ -1,66 +1,101 @@
 {
-  "Entry": "NORTH",
-  "RoomWidth": 10,
+  "Entry": "SOUTH",
+  "RoomWidth": 8,
   "Doors": {
     "NORTH": {
       "Ypos": 0,
-      "Xpos": 3
+      "Xpos": 7
     },
     "WEST": {
-      "Ypos": 9,
+      "Ypos": 4,
       "Xpos": 0
     },
     "SOUTH": {
-      "Ypos": 13,
+      "Ypos": 4,
       "Xpos": 6
     },
     "EAST": {
-      "Ypos": 5,
-      "Xpos": 9
+      "Ypos": 4,
+      "Xpos": 7
     }
   },
   "Positions": {
     "ObjectPositions": [
       {
-        "Ypos": 1,
+        "Ypos": 0,
         "Xpos": 1
       },
       {
-        "Ypos": 3,
-        "Xpos": 3
+        "Ypos": 4,
+        "Xpos": 2
       },
       {
-        "Ypos": 8,
-        "Xpos": 1
+        "Ypos": 4,
+        "Xpos": 4
       },
       {
-        "Ypos": 11,
+        "Ypos": 2,
+        "Xpos": 2
+      },
+      {
+        "Ypos": 4,
+        "Xpos": 5
+      },
+      {
+        "Ypos": 0,
         "Xpos": 7
       },
       {
-        "Ypos": 12,
-        "Xpos": 9
+        "Ypos": 2,
+        "Xpos": 6
+      },
+      {
+        "Ypos": 1,
+        "Xpos": 5
+      },
+      {
+        "Ypos": 0,
+        "Xpos": 6
       }
     ],
     "WorldObjects": [
-      {"className": "Obstacle"},
-      {"className": "Obstacle"},
-      {"className": "Obstacle"},
+      {
+        "HealthAdder": 10,
+        "className": "Health"
+      },
+      {
+        "damage": 2,
+        "facing": "EAST",
+        "maxHealth": 100,
+        "className": "Enemy",
+        "currHealth": 100
+      },
       {"className": "Obstacle"},
       {
-        "damage": 20,
-        "facing": "NORTH",
+        "HealthAdder": 10,
+        "className": "Health"
+      },
+      {"className": "Obstacle"},
+      {
+        "damage": 40,
+        "facing": "SOUTH",
         "maxHealth": 100,
         "className": "Player",
-        "currHealth": 34,
+        "currHealth": 54,
         "Inventory": [{
           "maxDurability": 25,
           "DamageAdder": 10,
           "className": "Sword",
-          "currentDurability": 14
+          "currentDurability": 6
         }]
+      },
+      {"className": "Obstacle"},
+      {"className": "Obstacle"},
+      {
+        "HealthAdder": 10,
+        "className": "Health"
       }
     ]
   },
-  "RoomHeight": 14
+  "RoomHeight": 5
 }
