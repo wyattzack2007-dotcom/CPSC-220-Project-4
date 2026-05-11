@@ -164,10 +164,6 @@ class Player extends Actor {
       }
     }
   }
-<<<<<<< HEAD
-
-
-=======
   
     /**
    *      Method: public removeInventoryItem()
