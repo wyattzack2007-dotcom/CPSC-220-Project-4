@@ -1,5 +1,5 @@
 /**
- *      Author: Patrick Walter
+ *      Author: Patrick Walter, Wyatt Zackowski
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -10,8 +10,9 @@
                 object
  */
 public class Sword extends Interactable {
-
   private int damageAdder; //damage to be added when sword is equipped
+  private int maxDurability; //Sword durability
+  private int currentDurability; //Current durability
   PImage img; //sword image
   
   /**
@@ -22,6 +23,8 @@ public class Sword extends Interactable {
   public Sword()
   {
     damageAdder = 10;
+    maxDurability = 25;
+    currentDurability = maxDurability;
     img = loadImage("data/sword.png");
   }
   
@@ -33,6 +36,8 @@ public class Sword extends Interactable {
   public Sword(JSONObject data)
   {
     damageAdder = data.getInt("DamageAdder");
+    maxDurability = data.getInt("maxDurability", 25);
+    currentDurability = data.getInt("currentDurability", maxDurability);
   }
   
   
@@ -47,6 +52,24 @@ public class Sword extends Interactable {
     int currDamage = player.getDamage(); //get current player damage
     player.setDamage(currDamage+damageAdder); //increase damage
     player.addInventoryItem(this); //add sword to inventory to be displayed
+    return true;
+  }
+  
+  /**
+   *      Method: public useOnAttack()
+   *  Parameters: Player player
+   *      Return: boolean
+   * Description: Removes sword if broken
+   */
+  public boolean useOnAttack(Player player) {
+    if (currentDurability <= 0) {
+      // Sword is broken
+      player.setDamage(player.getDamage() - damageAdder); // remove bonus
+      player.removeInventoryItem(this);                   // optional
+      return false;
+    }
+    
+    currentDurability--;
     return true;
   }
   
@@ -73,7 +96,38 @@ public class Sword extends Interactable {
     JSONObject obj = new JSONObject();
     obj.setString("className", "Sword");
     obj.setInt("DamageAdder", damageAdder);
+    obj.setInt("maxDurability", maxDurability);
+    obj.setInt("currentDurability", currentDurability);
     return obj;
   }
   
+   /*
+    Method: getCurrentDurability()
+    Parameters: void
+    Return: none
+    Description: returns current durability
+   */  
+  public int getCurrentDurability() {
+    return currentDurability;
+  }
+  
+   /*
+    Method: getCurrentDurability()
+    Parameters: void
+    Return: none
+    Description: returns max durability
+   */ 
+  public int getMaxDurability() {
+    return maxDurability;
+  }
+  
+   /*
+    Method: getCurrentDurability()
+    Parameters: void
+    Return: none
+    Description: returns if sword is broken
+   */ 
+  public boolean isBroken() {
+    return currentDurability <= 0;
+  }
 }

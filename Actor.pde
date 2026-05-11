@@ -1,6 +1,6 @@
 /**
  *      Author: Prof. Morales, Patrick Walter, Bella Olmo
- *      Author: Prof. Morales, Patrick Walter
+
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
  *     Created: 2026-04-15
@@ -194,7 +194,5 @@ public void draw(float size)
    *      Return: Action - The selected action to perform
    * Description: Selects an action to perform
    */
-
-
   abstract public Action getAction();
 }

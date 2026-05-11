@@ -1,4 +1,5 @@
 /**
+<<<<<<< HEAD
  *      Author: Prof. Morales, Patrick Walter, Wyatt Zackowski
  *      Course: CPSC 220
  *  Instructor: Prof. Morales
@@ -27,8 +28,12 @@ class Scene {
   private int enemyDensity; //amount of enemies to be spawned
   private int obstacleDensity; //amount of obstacles to be spawned
   private int interactableDensity; //amount of interactables to be spawned
+<<<<<<< HEAD
 
     
+=======
+  
+>>>>>>> 5b83fcbe61c5771863ccfc2242542f78a63619dc
   /*
     Constructor: public Scene()
     Parameters: none
@@ -366,6 +371,10 @@ class Scene {
     //loop for interactables
     for (int i = 0; i < interactableDensity; i++)
     {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5b83fcbe61c5771863ccfc2242542f78a63619dc
       //Chance for sword to spawn
       int r = round(random(0,5));
       if(r == 1)
@@ -379,10 +388,13 @@ class Scene {
         room[validPos.getX()][validPos.getY()] = sword;
         continue;
       }
+<<<<<<< HEAD
       Health health = new Health();
       Position validPos = getValidPosition();
       objMap.put(health, validPos);
       room[validPos.getX()][validPos.getY()] = health;
+=======
+>>>>>>> 5b83fcbe61c5771863ccfc2242542f78a63619dc
     }
   }
   

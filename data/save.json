@@ -1,0 +1,66 @@
+{
+  "Entry": "NORTH",
+  "RoomWidth": 10,
+  "Doors": {
+    "NORTH": {
+      "Ypos": 0,
+      "Xpos": 3
+    },
+    "WEST": {
+      "Ypos": 9,
+      "Xpos": 0
+    },
+    "SOUTH": {
+      "Ypos": 13,
+      "Xpos": 6
+    },
+    "EAST": {
+      "Ypos": 5,
+      "Xpos": 9
+    }
+  },
+  "Positions": {
+    "ObjectPositions": [
+      {
+        "Ypos": 1,
+        "Xpos": 1
+      },
+      {
+        "Ypos": 3,
+        "Xpos": 3
+      },
+      {
+        "Ypos": 8,
+        "Xpos": 1
+      },
+      {
+        "Ypos": 11,
+        "Xpos": 7
+      },
+      {
+        "Ypos": 12,
+        "Xpos": 9
+      }
+    ],
+    "WorldObjects": [
+      {"className": "Obstacle"},
+      {"className": "Obstacle"},
+      {"className": "Obstacle"},
+      {"className": "Obstacle"},
+      {
+        "damage": 20,
+        "facing": "NORTH",
+        "maxHealth": 100,
+        "className": "Player",
+        "currHealth": 34,
+        "Inventory": [{
+          "maxDurability": 25,
+          "DamageAdder": 10,
+          "className": "Sword",
+          "currentDurability": 14
+        }]
+      }
+    ]
+  },
+  "RoomHeight": 14
+}
