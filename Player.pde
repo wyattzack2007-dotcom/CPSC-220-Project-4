@@ -212,8 +212,6 @@ class Player extends Actor {
       }
     }
   }
-  
->>>>>>> 5b83fcbe61c5771863ccfc2242542f78a63619dc
   /**
    *      Method: public keyPressed()
    *  Parameters: void
@@ -289,10 +287,6 @@ class Player extends Actor {
     Return: none
     Description: draws any equipped items
    */  
-<<<<<<< HEAD
-
-=======
->>>>>>> 5b83fcbe61c5771863ccfc2242542f78a63619dc
   public void drawItems(float size)
   {
     //rotate item
