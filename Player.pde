@@ -132,7 +132,6 @@ class Player extends Actor {
     }
 
     // Check if the action can be performed
-    System.out.println(getActionValidity(action));
     return getActionValidity(action) ? action : null;
     
     

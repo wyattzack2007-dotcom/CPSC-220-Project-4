@@ -48,7 +48,6 @@ class Scene {
     
     positions.put(player, new Position(5, 5, this));
     
-    
     reset(entry);
   }
   
@@ -175,6 +174,10 @@ class Scene {
       if (dataType.equals("Sword"))
       {
         worldObj = new Sword();
+      }
+      if (dataType.equals("Health"))
+      {
+        worldObj = new Health();
       }
       //set position
       objPos = new Position(objPositions.getJSONObject(i), this);
@@ -334,7 +337,7 @@ class Scene {
     //spawn rates
     enemyDensity = 1;
     obstacleDensity = 4;
-    interactableDensity = 1;
+    interactableDensity = 3;
     
     //loop for enemies
     for (int i = 0; i < enemyDensity; i++)
@@ -374,7 +377,12 @@ class Scene {
         //add to hashmap and room array
         objMap.put(sword, validPos);
         room[validPos.getX()][validPos.getY()] = sword;
+        continue;
       }
+      Health health = new Health();
+      Position validPos = getValidPosition();
+      objMap.put(health, validPos);
+      room[validPos.getX()][validPos.getY()] = health;
     }
   }
   
@@ -510,7 +518,7 @@ class Scene {
 
       if (isActionValid) {
         Actor enemy = (Actor)this.room[x][y];
-
+        strike.play();
         if (enemy.getHealth() > 0) {
           enemy.updateHealth(-actor.getDamage());
           if (enemy.getHealth() <= 0)

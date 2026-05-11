@@ -30,6 +30,7 @@ abstract class Actor extends WorldObject {
     this.currHealth = health;
     this.damage = damage;
     this.facing = facing;
+    
     this.validActions = new HashMap<Action, Boolean>();
   }
 
@@ -84,6 +85,10 @@ abstract class Actor extends WorldObject {
 
   public int getDamage() {
     return this.damage;
+  }
+  
+  public float getCurrHealth() {
+    return currHealth;
   }
   
   public void setDamage(int amount) {

@@ -15,6 +15,8 @@ import processing.sound.*;
 Scene scene;
 String fileName;
 SoundFile music;
+SoundFile strike;
+Amplitude amp;
 
 /****************************************************************************/
 /* Method: setup()                                                          */
@@ -27,11 +29,10 @@ void setup()
   fullScreen(P2D);
   pixelDensity(1);
   music = new SoundFile(this, "data/music.mp3");
+  strike = new SoundFile(this, "data/strike.wav");
   music.loop();
   fileName = sketchPath("data/save.json");
   File file = new File(fileName);
-  
-  
   if (file.exists()) 
   {
     JSONObject data = loadJSONObject(fileName);
@@ -54,12 +55,9 @@ void setup()
 /****************************************************************************************************************/
 void draw() 
 {
-      
-
+  
   background(0);
-
   music.amp(.1);
-
   
   if (scene.tryTurn()) 
   {
